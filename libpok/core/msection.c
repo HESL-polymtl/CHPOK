@@ -66,7 +66,7 @@ void msection_leave(struct msection* section)
     }
 }
 
-pok_ret_t msection_wait(struct msection* section, SYSTEM_TIME_TYPE timeout)
+pok_ret_t msection_wait(struct msection* section, pok_time_t timeout)
 {
     return jet_msection_wait(section, &timeout);
 }

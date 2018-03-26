@@ -21,11 +21,11 @@ import os
 
 cflags = ''
 SConscript(os.environ['POK_PATH']+'/misc/SConscript', exports = 'cflags')
-
 Import('env')
 env['PARTITIONS'] = ['P1', 'P2']
 env['XML'] = os.path.join(Dir('.').abspath, 'config.xml')
 SConscript(env['POK_PATH']+'/misc/SConscript_base')
+
 
 env.Clean('chpok', env['POK_PATH']+'/build/')
 env.Clean('local', ['build/', [pdir+'/build' for pdir in env['PARTITIONS']]])

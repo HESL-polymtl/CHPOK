@@ -26,7 +26,6 @@ import chpok_configuration
 import template_generation
 
 Import('env')
-
 AddMethod(env, template_generation.TemplateRender)
 
 def get_pok_definitions(source, env):

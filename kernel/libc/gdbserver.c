@@ -988,7 +988,7 @@ static void gdb_state_store_registers(struct gdb_state* tc)
     printf("Flush registers. pc = 0x%lx\n", registers[pc]);
 #endif
 #ifdef __i386__
-    printf("Flush registers. PC = 0x%lx\n", registers[PC]);
+    printf("Flush registers. PC = 0x%lx\n", (long unsigned int)registers[PC]);
 #endif
 
     gdb_get_regs(ea, registers);
@@ -1685,9 +1685,10 @@ handle_exception (int exceptionVector, struct jet_interrupt_context* ea)
                     && *ptr++ == ':') {
 
                     uintptr_t gdb_addr = gdb_thread_write_addr(&tc.t, addr, length);
-                    if (!gdb_addr)
+                    if (!gdb_addr) {
                         strcpy (remcomOutBuffer, "E03");
                         break;
+                    }
 
                     pok_space_switch(new_pid);
                     if (strncmp(ptr, "7d821008", 8) == 0) // TODO: Magic constant

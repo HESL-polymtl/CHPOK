@@ -51,8 +51,10 @@ struct jet_kernel_shared_data* __kuser ja_space_shared_data(jet_space_id space_i
     return (struct jet_kernel_shared_data* __kuser)space->phys_base;
 }
 
+/* FIX: Alexy Torres, variable unused, fix: comment */
+#if 0
 static const size_t ja_user_space_maximum_alignment = 16;
-
+#endif
 void __user* ja_space_get_heap(jet_space_id space_id)
 {
    struct ja_x86_space* space = &ja_spaces[space_id - 1];

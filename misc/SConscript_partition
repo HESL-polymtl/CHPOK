@@ -87,6 +87,8 @@ for d in src_dirs:
 for d in src_script_dirs:
     objs += SConscript(os.path.join(d, 'SConscript'), exports = ['part_env', 'part_build_dir'])
 
+print(part_env['LIBGCC'])
+
 part_elf = part_env.Program(target = part_build_dir+'part.elf', source = [
     objs,
     part_build_dir + 'deployment.c',

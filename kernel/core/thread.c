@@ -300,11 +300,11 @@ pok_ret_t pok_thread_delayed_start (pok_thread_id_t id,
     if (pok_time_is_infinity(kernel_delay_time))
         return POK_ERRNO_EINVAL;
 
-	pok_preemption_local_disable();
-	ret = thread_delayed_start_internal(thread, kernel_delay_time);
-	pok_preemption_local_enable();
+    pok_preemption_local_disable();
+    ret = thread_delayed_start_internal(thread, kernel_delay_time);
+    pok_preemption_local_enable();
 
-	return ret;
+    return ret;
 }
 
 pok_ret_t pok_thread_start (pok_thread_id_t id)
@@ -362,7 +362,9 @@ pok_ret_t pok_thread_get_status (pok_thread_id_t id,
             k_status->state = t->state;
 	}
     else
+    {
         k_status->state = t->state;
+    }
 
 	if(pok_time_is_infinity(t->time_capacity))
 		k_status->deadline_time = POK_TIME_INFINITY;

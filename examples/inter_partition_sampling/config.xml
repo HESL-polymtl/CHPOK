@@ -13,8 +13,8 @@
             As extension, we allow to specify time in other units,
             such as milliseconds (for convenience).
         -->
-        <Slot Type="Partition" PartitionNameRef="P1" Duration="15ms" PeriodicProcessingStart="true" />
-        <Slot Type="Partition" PartitionNameRef="P2" Duration="15ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="P1" Duration="30ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="P2" Duration="30ms" PeriodicProcessingStart="true" />
     </Schedule>
 
     <!--

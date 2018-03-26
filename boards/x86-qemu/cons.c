@@ -30,6 +30,20 @@
 #define  COM0      0x3F8
 #define  COM1      0x2f8
 
+struct s_cons
+{
+  char row;
+  char col;
+  char cur_attr;
+};
+
+static const int     screen_w = 80;
+static const int     screen_h = 25;
+static const int     tab_size = 8;
+static char *const   vga_base = (char *)0xb8000;
+struct s_cons        g_cons;
+
+
 int is_transmit_empty(int port) {
    return inb(port + 5) & 0x20;
 }
@@ -79,6 +93,86 @@ static size_t iostream_read_common(int port, char* s, size_t length)
    return i;
 }
 
+void pok_cons_clear (void)
+{
+   int   i;
+   int   j;
+   char  *ptr;
+   static struct s_cons		local_curs; /* local copy of the current cursor position */
+
+   ptr = vga_base;
+   local_curs = g_cons;
+
+   for (i = 0 ; i < screen_h ; ++i)
+   {
+      for (j = 0 ; j < screen_w ; ++j)
+      {
+         *ptr = 0;
+         ++ptr;
+         *ptr = g_cons.cur_attr;
+         ++ptr;
+      }
+   }
+
+   local_curs.row = 0;
+   local_curs.col = 0;
+
+   g_cons = local_curs; /* reset the global cursor to the new position */
+}
+
+static void pok_write_vga (const char c)
+{
+   char*                ptr;
+   static struct s_cons local_curs; /* Local copy of the curent cursor position */
+   int                  i;
+
+   local_curs = g_cons;
+
+   if (c == '\r')
+   {
+      local_curs.col = 0;
+   }
+
+   if (c == '\n')
+   {
+      local_curs.col = 0;
+      ++local_curs.row;
+   }
+
+   if (c == '\t')
+   {
+      local_curs.col += tab_size - local_curs.col % tab_size;
+   }
+
+   if (c != '\r' && c != '\n' && c != '\t')
+   {
+      ptr = vga_base + 2 * screen_w * local_curs.row + 2 * local_curs.col++;
+      *ptr = c;
+      ++ptr;
+      *ptr = local_curs.cur_attr;
+   }
+
+   if (local_curs.col >= screen_w)
+   {
+      local_curs.col = 0;
+      ++local_curs.row;
+   }
+
+   if (local_curs.row >= screen_h)
+   {
+      memcpy (vga_base, vga_base + 2 * screen_w, (screen_h - 1) * screen_w * 2);
+      for (i = 0; i < screen_w; ++i)
+      {
+         *(vga_base + 2 * screen_w * (screen_h - 1) + 2 * i) = 0;
+         *(vga_base + 2 * screen_w * (screen_h - 1) + 2 * i + 1) = local_curs.cur_attr;
+      }
+      local_curs.row = screen_h - 1;
+   }
+
+   // Reset the global cursor to the new position
+   g_cons = local_curs;
+
+}
 
 static size_t iostream_write_common (int port, const char *s, size_t length)
 {
@@ -92,12 +186,20 @@ static size_t iostream_write_common (int port, const char *s, size_t length)
             write_serial(port, '\r');
             write_serial(port, '\n');
         }
+	pok_write_vga(c);
     }
+
+   
+
+
    return length;
 }
 
 static void iostream_init_common (int port)
 {
+   /* Init VGA screen */
+   pok_cons_clear ();
+   g_cons.cur_attr = 0x7 | 0 << 4;
    /* To be fixed : init serial */
    outb(port + 1, 0x00);    // Disable all interrupts
    outb(port + 3, 0x80);    // Enable DLAB (set baud rate divisor)

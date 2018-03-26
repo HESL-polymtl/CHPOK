@@ -110,12 +110,12 @@ env['LIBPOK_CPPPATH'] = [
 
 arch_prefix_dict = {
     'ppc':    'powerpc-elf-',
-    'x86':    'i386-elf-'
+    'x86':    ''
 }
 
 arch_gdb_dict = {
     'ppc':    'powerpc-elf-gdb',
-    'x86':    'i386-elf-gdb'
+    'x86':    'gdb'
 }
 
 arch_qemu_dict = {
@@ -137,11 +137,11 @@ for tool in tools:
         env[tool] = os.environ[tool]
     except:
         env[tool] = tools_dict[tool][env['ARCH']]
-
+print(env['PREFIX'])
 # These depend only on prefix
 env['AR']      = env['PREFIX'] + 'ar'
-env['CC']      = env['PREFIX'] + 'gcc'
-env['LINK']    = env['PREFIX'] + 'ld'
+env['CC']      = env['PREFIX'] + 'gcc -m32'
+env['LINK']    = env['PREFIX'] + 'ld -m elf_i386'
 env['OBJCOPY'] = env['PREFIX'] + 'objcopy'
 env['OBJDUMP'] = env['PREFIX'] + 'objdump'
 env['RANLIB']  = env['PREFIX'] + 'ranlib'

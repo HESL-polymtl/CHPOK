@@ -209,9 +209,9 @@ int info_partition(int argc,char **argv){
     printf("base_vaddr = 0x%lx\n", (unsigned long)space_layout.user_addr);
     printf("size = 0x%zx\n", space_layout.size);
     printf("name = %s\n", part->base_part.name);
-    printf("nthreads = %lu\n", part->nthreads);
-    printf("period = %lu\n", part->base_part.period);
-    printf("duration = %lu\n", part->base_part.duration);
+    printf("nthreads = %lu\n", (unsigned long)part->nthreads);
+    printf("period = %lu\n", (unsigned long)part->base_part.period);
+    printf("duration = %lu\n", (unsigned long)part->base_part.duration);
     //printf("activation = %llu\n", part->base_part.activation);
     printf("lock_level = %u\n", (unsigned) part->lock_level);
     printf("prev_thread = %u\n", part->lock_level ? (unsigned)(part->thread_locked - part->threads) : (unsigned)-1);

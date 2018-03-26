@@ -89,14 +89,14 @@ void ja_exception_init(void)
 __attribute__((unused))
 static void dump_registers (interrupt_frame *frame)
 {
-  printf ("ES: %lx, DS: %lx\n",  frame->es, frame->ds);
-  printf ("CS: %lx, SS: %lx\n",  frame->cs, frame->ss);
-  printf ("EDI: %lx, ESI: %lx\n", frame->edi, frame->esi);
-  printf ("EBP: %lx, ESP: %lx\n", frame->ebp, frame->esp);
-  printf ("EAX: %lx, ECX: %lx\n", frame->eax, frame->ecx);
-  printf ("EDX: %lx, EBX: %lx\n", frame->edx, frame->ebx);
-  printf ("EIP: %lx, ErrorCode: %lx\n", frame->eip, frame->error);
-  printf ("EFLAGS: %lx\n\n", frame->eflags);
+  printf ("ES: %lx, DS: %lx\n",  (unsigned long)frame->es, (unsigned long)frame->ds);
+  printf ("CS: %lx, SS: %lx\n",  (unsigned long)frame->cs, (unsigned long)frame->ss);
+  printf ("EDI: %lx, ESI: %lx\n", (unsigned long)frame->edi, (unsigned long)frame->esi);
+  printf ("EBP: %lx, ESP: %lx\n", (unsigned long)frame->ebp, (unsigned long)frame->esp);
+  printf ("EAX: %lx, ECX: %lx\n", (unsigned long)frame->eax, (unsigned long)frame->ecx);
+  printf ("EDX: %lx, EBX: %lx\n", (unsigned long)frame->edx, (unsigned long)frame->ebx);
+  printf ("EIP: %lx, ErrorCode: %lx\n", (unsigned long)frame->eip, (unsigned long)frame->error);
+  printf ("EFLAGS: %lx\n\n", (unsigned long)frame->eflags);
 }
 
 /* 
@@ -167,7 +167,7 @@ void exception_INVALIDOPCODE_handler(interrupt_frame* frame)
     raise_error_from_interrupt_dump(POK_ERROR_ID_ILLEGAL_REQUEST,
       /*TODO: User or kernel*/TRUE,
       /*TODO: Failed address*/NULL,
-      "[KERNEL] Raise exception invalid opcode fault, EIP: 0x%lx\n", frame->eip
+      "[KERNEL] Raise exception invalid opcode fault, EIP: 0x%lx\n", (unsigned long)frame->eip
     );
 }
 void exception_NOMATH_COPROC_handler(interrupt_frame* frame)
@@ -217,7 +217,7 @@ void exception_GENERAL_PROTECTION_handler(interrupt_frame* frame)
     raise_error_from_interrupt_dump(POK_ERROR_ID_ILLEGAL_REQUEST,
       /*TODO: User or kernel*/TRUE,
       /*TODO: Failed address*/NULL,
-      "[KERNEL] Raise exception general protection fault. EIP=0x%lx\n", frame->eip
+      "[KERNEL] Raise exception general protection fault. EIP=0x%lx\n", (unsigned long)frame->eip
     );
 }
 void exception_PAGEFAULT_handler(interrupt_frame* frame)
