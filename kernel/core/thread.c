@@ -36,9 +36,9 @@
 
 /*
  * Find thread by name.
- * 
+ *
  * Note: Doesn't require disable local preemption.
- * 
+ *
  * Note: Name should be located in kernel space.
  */
 static pok_thread_t* find_thread(const char name[MAX_NAME_LENGTH])
@@ -63,9 +63,9 @@ static pok_thread_t* find_thread(const char name[MAX_NAME_LENGTH])
 
 /*
  * Return thread by id.
- * 
+ *
  * Return NULL if no such thread created.
- * 
+ *
  * Note: Doesn't require disable local preemption.
  */
 static pok_thread_t* get_thread_by_id(pok_thread_id_t id)
@@ -167,9 +167,9 @@ pok_ret_t pok_thread_create (const char* __user name,
 
 #ifdef POK_NEEDS_THREAD_SLEEP
 
-/* 
+/*
  * Turn current thread into the sleep for a while.
- * 
+ *
  * NOTE: It is possible to sleep forever(ARINC prohibits that).
  */
 pok_ret_t pok_thread_sleep(const pok_time_t* __user time)
@@ -271,10 +271,13 @@ static pok_ret_t thread_delayed_start_internal (pok_thread_t* thread,
 		// periodic process
 		thread_start_time = get_next_periodic_processing_start() + delay;
 		thread->next_activation = thread_start_time + thread->period;
+
 	}
 
 	if(!pok_time_is_infinity(thread->time_capacity))
+    {
 		thread_set_deadline(thread, thread_start_time + thread->time_capacity);
+    }
 
 	/* Only non-delayed aperiodic process starts immediately */
 	if(delay == 0 && pok_time_is_infinity(thread->period))
@@ -611,7 +614,7 @@ pok_ret_t pok_thread_stop(void)
     /*
      * It is *possible* for thread to be stopped while in msection.
      * But this cannot hurt kernel.
-     * 
+     *
      * TODO: Should additional os-check to be added?
      */
     thread_stop(t);
@@ -665,9 +668,10 @@ pok_ret_t pok_sched_end_period(void)
 
     pok_preemption_local_disable();
 
+    t->next_activation += t->period;
 	thread_wait_timed(t, t->next_activation);
 	thread_set_deadline(t, t->next_activation + t->time_capacity);
-	t->next_activation += t->period;
+
 
 	pok_preemption_local_enable();
 
@@ -719,7 +723,6 @@ pok_ret_t pok_sched_replenish(const pok_time_t* __user budget)
             ret = POK_ERRNO_MODE;
             goto out;
         }
-
         thread_set_deadline(t, calculated_deadline);
         ret = POK_ERRNO_OK;
     }
@@ -807,16 +810,16 @@ pok_ret_t jet_msection_wait(struct msection* __user section,
     // ... And use common wait.
     thread_wait_common(thread_current, *kernel_timeout);
 
-    /* 
+    /*
      * It is possible, that current thread wasn't the highest-priority
      * thread. Because of that, `thread_wait_common` may do not cause
      * scheduling invalidation.
-     * 
+     *
      * From the other side, waiting on msection and leaving msection
      * are the only possible state-modifications for non-highest-priority
      * thread. Normal msection leaving is followed by jet_resched(),
      * which invalidates scheduling.
-     * 
+     *
      * So, explicitely invalidate scheduling here.
      */
     pok_sched_local_invalidate();
@@ -905,21 +908,21 @@ static void msection_wq_del(struct msection_wq* wq,
     tshd_t->wq_next = tshd_t->wq_prev = JET_THREAD_ID_NONE;
 }
 
-/* 
+/*
  * Awoke waiting threads in the waitqueue.
- * 
+ *
  * Every thread in the queue which hasn't waited at the function's call
  * is removed from the queue.
- * 
+ *
  * If 'first_only' is TRUE, the first waiting thread only. This thread
  * will be pointed by wq->first after the call.
  * If 'first_only' is FALSE, notify all waiting threads. List of the
  * awoken threads may be iterated directly from user space.
- * 
+ *
  * May be called only by the owner of the section.
- * 
+ *
  * Returns:
- * 
+ *
  *     POK_ERRNO_OK - at least on thread has been notified.
  *     POK_ERRNO_EMPTY - there is no waiting threads in the waitqueue.
  */
@@ -977,10 +980,10 @@ pok_ret_t jet_msection_wq_notify(struct msection* __user section,
 
 /*
  * Compute number of waiting threads in the waitqueue.
- * 
+ *
  * Every thread in the queue which hasn't waited at the function's call
  * is removed from the queue.
- * 
+ *
  * Returns: POK_ERRNO_OK.
  */
 pok_ret_t jet_msection_wq_size(struct msection* __user section,
@@ -1076,7 +1079,7 @@ pok_thread_t* pok_thread_wq_wake_up(pok_thread_wq_t* wq)
         pok_thread_t* t = list_first_entry(&wq->waits, pok_thread_t, wait_elem);
         /*
          * First, remove thread from the waiters list.
-         * 
+         *
          * So futher thread_wake_up() will not interpret it as timeouted.
          */
         list_del_init(&t->wait_elem);

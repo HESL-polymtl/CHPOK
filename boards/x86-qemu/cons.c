@@ -1,6 +1,6 @@
 /*
  *                               POK header
- * 
+ *
  * The following file is a part of the POK project. Any modification should
  * made according to the POK licence. You CANNOT use this file or a part of
  * this file is this part of a file for your own project
@@ -9,9 +9,9 @@
  *
  * Please follow the coding guidelines described in doc/CODING_GUIDELINES
  *
- *                                      Copyright (c) 2007-2009 POK team 
+ *                                      Copyright (c) 2007-2009 POK team
  *
- * Created by julien on Thu Jan 15 23:34:13 2009 
+ * Created by julien on Thu Jan 15 23:34:13 2009
  */
 
 #include <config.h>
@@ -58,7 +58,7 @@ void write_serial(int port, char a) {
 #define COM_RX		0	// In:	Receive buffer (DLAB=0)
 #define   COM_LSR_DATA	0x01	//   Data available
 #define   COM_LSR_RFE	0x80	//   Error in Received FIFO
-	
+
 static int data_to_read(int port) //return 0 if no data to read
 {
     int flags = inb(port + COM_LSR);
@@ -189,7 +189,7 @@ static size_t iostream_write_common (int port, const char *s, size_t length)
 	pok_write_vga(c);
     }
 
-   
+
 
 
    return length;
@@ -264,5 +264,3 @@ struct jet_iostream* ja_stream_default_read_debug = NULL;
 struct jet_iostream* ja_stream_default_write_debug = NULL;
 
 #endif
-
-

@@ -31,7 +31,7 @@
 /*
  * Function which is executed in kernel-only partition's context when
  * partition's mode is IDLE.
- * 
+ *
  * Note, that we do not enable local preemption here.
  * This has nice effect in case when partition has moved into this mode
  * because of errors: even if some partition's data are corrupted,
@@ -64,9 +64,9 @@ static void thread_reset(pok_thread_t* t)
 }
 
 
-/* 
+/*
  * Initialize thread object.
- * 
+ *
  * Executed once during partition initialization.
  */
 static void thread_init(pok_thread_t* t)
@@ -321,7 +321,7 @@ void pok_partition_arinc_init(pok_partition_arinc_t* part)
 
 /*
  * Transition from INIT_* mode to NORMAL.
- * 
+ *
  * Executed with local preemption disabled.
  */
 static void partition_set_mode_normal(void)
@@ -332,7 +332,7 @@ static void partition_set_mode_normal(void)
 	pok_time_t current_time = jet_system_time();
 	/*
 	 * Cached value of first release point.
-	 * 
+	 *
 	 * NOTE: Initially it is not cached. Such implementation allows to
 	 * not calculate release point for partition which have no periodic
 	 * processes.
@@ -365,7 +365,9 @@ static void partition_set_mode_normal(void)
 			// Periodic process
 			if(pok_time_is_infinity(periodic_release_point))
 				periodic_release_point = get_next_periodic_processing_start();
+                
 			thread_start_time = periodic_release_point + t->delayed_time;
+    		t->next_activation = thread_start_time;
 		}
 
 		if(thread_start_time <= current_time)
@@ -444,9 +446,9 @@ pok_ret_t pok_current_partition_get_status(pok_partition_status_t * __user statu
     return POK_ERRNO_OK;
 }
 
-/* 
+/*
  * Whether lock level cannot be changed now.
- * 
+ *
  * NOTE: Doesn't require disabled local preemption.
  */
 static pok_bool_t is_lock_level_blocked(void)
