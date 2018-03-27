@@ -1,6 +1,6 @@
 /*
  *                               POK header
- * 
+ *
  * The following file is a part of the POK project. Any modification should
  * made according to the POK licence. You CANNOT use this file or a part of
  * this file is this part of a file for your own project
@@ -9,12 +9,12 @@
  *
  * Please follow the coding guidelines described in doc/CODING_GUIDELINES
  *
- *                                      Copyright (c) 2007-2009 POK team 
+ *                                      Copyright (c) 2007-2009 POK team
  *
- * This file also incorporates work covered by the following 
+ * This file also incorporates work covered by the following
  * copyright and license notice:
  *
- *  Copyright (C) 2013-2014 Maxim Malkov, ISPRAS <malkov@ispras.ru> 
+ *  Copyright (C) 2013-2014 Maxim Malkov, ISPRAS <malkov@ispras.ru>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created by julien on Thu Jan 15 23:34:13 2009 
+ * Created by julien on Thu Jan 15 23:34:13 2009
  */
 
 #include <config.h>
@@ -56,7 +56,7 @@ void TIMED_WAIT (SYSTEM_TIME_TYPE delay_time, RETURN_CODE_TYPE *return_code)
 
    pok_ret_t core_ret;
    core_ret = pok_thread_sleep(&delay_time);
-    
+
    switch (core_ret) {
       MAP_ERROR(POK_ERRNO_OK, NO_ERROR);
       MAP_ERROR(POK_ERRNO_MODE, INVALID_MODE);
@@ -94,4 +94,3 @@ void REPLENISH (SYSTEM_TIME_TYPE budget_time, RETURN_CODE_TYPE *return_code)
 }
 
 #endif
-

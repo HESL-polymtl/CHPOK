@@ -50,20 +50,28 @@ void delayed_event_add(struct delayed_event_queue* q,
     struct delayed_event* event, pok_time_t timepoint,
     uint16_t handler_id, process_event_t process_event)
 {
+    struct delayed_event* next_event;
+
     /*
      * Remove event from queue, if it was.
      */
-    if(event->pprev_event) {
-        *(event->pprev_event) = event->next_event;
+    if(event->pprev_event)
+    {
+        next_event = event->next_event;
+
+        *(event->pprev_event) = next_event;
+        if(next_event)
+            next_event->pprev_event = event->pprev_event;
+
+        event->pprev_event = NULL;
     }
 
     event->timepoint = timepoint;
     event->handler_id = handler_id;
     event->process_event = process_event;
 
-    struct delayed_event** insertion_point;
-    struct delayed_event* next_event;
 
+    struct delayed_event** insertion_point;
     for(insertion_point = &q->first_event, next_event = *insertion_point;
         next_event != NULL;
         insertion_point = &next_event->next_event, next_event = *insertion_point)
@@ -77,6 +85,7 @@ void delayed_event_add(struct delayed_event_queue* q,
     *insertion_point = event;
     if(next_event)
         next_event->pprev_event = &event->next_event;
+
 }
 
 void delayed_event_remove(struct delayed_event_queue* q,

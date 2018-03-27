@@ -672,7 +672,6 @@ pok_ret_t pok_sched_end_period(void)
 	thread_wait_timed(t, t->next_activation);
 	thread_set_deadline(t, t->next_activation + t->time_capacity);
 
-
 	pok_preemption_local_enable();
 
     return POK_ERRNO_OK;
