@@ -11,10 +11,10 @@
  *
  *                                      Copyright (c) 2007-2009 POK team
  *
- * This file also incorporates work covered by the following 
+ * This file also incorporates work covered by the following
  * copyright and license notice:
  *
- *  Copyright (C) 2013-2014 Maxim Malkov, ISPRAS <malkov@ispras.ru> 
+ *  Copyright (C) 2013-2014 Maxim Malkov, ISPRAS <malkov@ispras.ru>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -64,14 +64,14 @@ void GET_PROCESS_ID(
 {
     pok_thread_id_t id;
     pok_ret_t core_ret;
-    
+
     core_ret = pok_thread_find(process_name, &id);
-    
+
     if (core_ret == POK_ERRNO_OK) {
         *process_id = id + 1;
         *return_code = NO_ERROR;
     } else {
-        *return_code = INVALID_CONFIG;  
+        *return_code = INVALID_CONFIG;
     }
 }
 
@@ -177,7 +177,7 @@ void CREATE_PROCESS (
     }
 
     if (core_ret != POK_ERRNO_OK) return;
-    
+
     *process_id = core_process_id + 1;
 }
 
@@ -289,7 +289,7 @@ void DELAYED_START(
 
 void LOCK_PREEMPTION (LOCK_LEVEL_TYPE *LOCK_LEVEL, RETURN_CODE_TYPE *return_code)
 {
-    pok_ret_t ret = pok_partition_inc_lock_level(LOCK_LEVEL);
+    pok_ret_t ret = pok_partition_inc_lock_level((int32_t*)LOCK_LEVEL);
     switch (ret) {
         MAP_ERROR(POK_ERRNO_OK, NO_ERROR);
         MAP_ERROR(POK_ERRNO_PARTITION_MODE, NO_ACTION);
@@ -300,7 +300,7 @@ void LOCK_PREEMPTION (LOCK_LEVEL_TYPE *LOCK_LEVEL, RETURN_CODE_TYPE *return_code
 
 void UNLOCK_PREEMPTION (LOCK_LEVEL_TYPE *LOCK_LEVEL, RETURN_CODE_TYPE *return_code)
 {
-    pok_ret_t ret = pok_partition_dec_lock_level(LOCK_LEVEL);
+    pok_ret_t ret = pok_partition_dec_lock_level((int32_t*)LOCK_LEVEL);
     switch (ret) {
         MAP_ERROR(POK_ERRNO_OK, NO_ERROR);
         MAP_ERROR(POK_ERRNO_PARTITION_MODE, NO_ACTION);
