@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chpok-configuration xmlns:xi="http://www.w3.org/2001/XInclude">
+    <Partitions>
+        <xi:include href="P1/config.xml" parse="xml"/>
+        <xi:include href="P2/config.xml" parse="xml"/>
+    </Partitions>
+    <Schedule>
+        <!--
+            Slot element is close to A653_PartitionTimeWindowType defined
+            in the standard, but not quite it.
+
+            As extension, we allow to specify time in other units,
+            such as milliseconds (for convenience).
+        -->
+        <Slot Type="Partition" PartitionNameRef="P1" Duration="2000ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="P2" Duration="2000ms" PeriodicProcessingStart="true" />
+
+    </Schedule>
+
+</chpok-configuration>
