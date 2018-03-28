@@ -23,12 +23,14 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#define GET_STAT 1
+#include "../../../BENCH_TOOLS/get_stat.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
 #define PRIME_RANGE_BEGIN 1
-#define PRIME_RANGE_END   100000
-#define SECOND 1000000000LL
+#define PRIME_RANGE_END   10000
 
 /*******************************************************************************
  * TESTS FUNCTIONS
@@ -54,17 +56,19 @@ static void* prime_thread_func(void)
 
     uint32_t i;
     uint32_t count;
-    uint32_t period_32, duration_32;
+
+    /* Probing point */
+    GET_ET_STAT_1_3
 
     while(1)
     {
+        /* Probing point */
+        GET_ET_STAT_2_3
+
         /* PRIMES Iterations */
         count = 0;
         for(i = PRIME_RANGE_BEGIN; i < PRIME_RANGE_END; ++i)
         {
-            if(i % ((PRIME_RANGE_END - PRIME_RANGE_BEGIN) / 30) == 0)
-                printf("*");
-
             count += is_prime(i);
         }
 
@@ -75,13 +79,13 @@ static void* prime_thread_func(void)
             return (void*)1;
         }
 
-        period_32   = (uint32_t)pr_stat.PERIOD;
-        duration_32 = (uint32_t)pr_stat.DURATION;
-
-        printf("\n[p%d:%u|%u|%d] %u primes exist in [%u; %u]\n",
-               pr_stat.IDENTIFIER, period_32, duration_32,
+        printf("\n[p%ld:%lld|%lld|%d] %u primes exist in [%u; %u]\n",
+               pr_stat.IDENTIFIER, pr_stat.PERIOD, pr_stat.DURATION,
                pr_stat.OPERATING_MODE, count, PRIME_RANGE_BEGIN,
                PRIME_RANGE_END);
+
+        /* Probing point */
+        GET_ET_STAT_3_3
 
         PERIODIC_WAIT(&ret_type);
         if(ret_type != NO_ERROR)
@@ -96,7 +100,7 @@ static void* prime_thread_func(void)
 
 /*******************************************************************************
  * TESTS MAIN
- ******************************************************************************/
+ *************************095*****************************************************/
 int main ()
 {
     PROCESS_ATTRIBUTE_TYPE tattr;
@@ -105,9 +109,9 @@ int main ()
 
     tattr.ENTRY_POINT   = prime_thread_func;
     tattr.DEADLINE      = HARD;
-    tattr.PERIOD        = 30000000000;
+    tattr.PERIOD        = 400000000;
     tattr.STACK_SIZE    = 8096;
-    tattr.TIME_CAPACITY = 30000000000;
+    tattr.TIME_CAPACITY = 200000000;
     tattr.BASE_PRIORITY = 50;
     memcpy(&tattr.NAME, "PRIME_A653\0", 11 * sizeof(char));
 

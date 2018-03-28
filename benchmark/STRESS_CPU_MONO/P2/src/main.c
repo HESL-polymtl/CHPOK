@@ -23,30 +23,13 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#define GET_STAT 1
+#include "../../../BENCH_TOOLS/get_stat.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
-#define SQRT_ITER_COUNT   1000
-#define SECOND 1000000000LL
-
-/*******************************************************************************
- * TESTS FUNCTIONS
- * ARINC-653 Multicore RTOS Benchmark#define SECOND 1000000000LL
- *
- * Developped by:
- *    Alexy Torres Aurora Dugo
- *    Jean-Baptiste Lefoul
- *
- * Test: CPU stress tests
- * Activity:
- *    Square root computation
- *    Prime counter
- *
- * These tests aim to use the CPU at its maximum capacity. Memory footprint of
- * these tests should be the lowest possible.
-    uint32_t period_32, duration_32;
- *
- ******************************************************************************/
+#define SQRT_ITER_COUNT   100
 
 static double sqrt(double value)
 {
@@ -69,10 +52,12 @@ static void* sqrt_thread_func(void)
 
     float sum;
     uint32_t i, j;
-    uint32_t period_32, duration_32;
+
+    GET_ET_STAT_1_3
 
     while(1)
     {
+        GET_ET_STAT_2_3
 
         /* SQRT Iterations */
         sum = 0;
@@ -81,8 +66,6 @@ static void* sqrt_thread_func(void)
             for(j = 1; j < SQRT_ITER_COUNT; ++j)
                 sum += sqrt(i) * sqrt(j);
 
-            if(i % (SQRT_ITER_COUNT / 30) == 0)
-                printf(".");
         }
 
         GET_PARTITION_STATUS(&pr_stat, &ret_type);
@@ -92,11 +75,10 @@ static void* sqrt_thread_func(void)
             return (void*)1;
         }
 
-        period_32   = (uint32_t)pr_stat.PERIOD;
-        duration_32 = (uint32_t)pr_stat.DURATION;
+        printf("\n[p%ld:%lld|%lld|%d] SQRT Sum: %f\n", pr_stat.IDENTIFIER,
+               pr_stat.PERIOD, pr_stat.DURATION, pr_stat.OPERATING_MODE, sum);
 
-        printf("\n[p%d:%u|%u|%d] SQRT Sum: %f\n", pr_stat.IDENTIFIER,
-               period_32, duration_32, pr_stat.OPERATING_MODE, sum);
+        GET_ET_STAT_3_3
 
         PERIODIC_WAIT(&ret_type);
         if(ret_type != NO_ERROR)
@@ -120,9 +102,9 @@ int main ()
 
     tattr.ENTRY_POINT   = sqrt_thread_func;
     tattr.DEADLINE      = HARD;
-    tattr.PERIOD        = 30000000000;
+    tattr.PERIOD        = 400000000;
     tattr.STACK_SIZE    = 8096;
-    tattr.TIME_CAPACITY = 30000000000;
+    tattr.TIME_CAPACITY = 200000000;
     tattr.BASE_PRIORITY = MIN_PRIORITY_VALUE;
     memcpy(&tattr.NAME, "SQRT_A653\0", 10 * sizeof(char));
 

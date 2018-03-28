@@ -1,7 +1,7 @@
 <Partition>
     <Definition Identifier="1" Name="P1" />
     <!-- Amount of ram allocated (code + stack + static variables) -->
-    <Memory Bytes="200K" />
+    <Memory Bytes="75K" />
 
     <!-- Number of threads that can be created in this partition.
          Note that this number doesn't include main and error handler threads,
