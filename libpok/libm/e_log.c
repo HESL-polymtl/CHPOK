@@ -77,6 +77,7 @@
  * to produce the hexadecimal values shown.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include "math_private.h"

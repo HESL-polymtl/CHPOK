@@ -1,6 +1,6 @@
 /*
  *                               POK header
- * 
+ *
  * The following file is a part of the POK project. Any modification should
  * made according to the POK licence. You CANNOT use this file or a part of
  * this file is this part of a file for your own project
@@ -9,12 +9,14 @@
  *
  * Please follow the coding guidelines described in doc/CODING_GUIDELINES
  *
- *                                      Copyright (c) 2007-2009 POK team 
+ *                                      Copyright (c) 2007-2009 POK team
  *
- * Created by julien on Fri Jan 30 13:44:27 2009 
+ * Created by julien on Fri Jan 30 13:44:27 2009
  */
 
 
+#include <config.h>
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #ifndef __POK_LIBM_H__
@@ -45,7 +47,7 @@ struct exception {
 #define PLOSS           6
 
 
-#define fpclassify(x) (sizeof (x) == sizeof(float )  ?  __fpclassifyf((float)(x)) : __fpclassifyd((double)(x)))  
+#define fpclassify(x) (sizeof (x) == sizeof(float )  ?  __fpclassifyf((float)(x)) : __fpclassifyd((double)(x)))
 
 extern int __fpclassifyf(float      );
 extern int __fpclassifyd(double     );

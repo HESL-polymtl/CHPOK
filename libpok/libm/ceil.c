@@ -36,6 +36,7 @@
  *	Inexact flag raised if x not equal to ceil(x).
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

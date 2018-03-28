@@ -40,6 +40,7 @@
  *	acosh(NaN) is NaN without signal.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

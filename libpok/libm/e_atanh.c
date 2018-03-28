@@ -43,6 +43,7 @@
  *	atanh(+-1) is +-INF with signal.
  *
  */
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

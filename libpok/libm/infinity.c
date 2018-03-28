@@ -21,6 +21,7 @@
  * Public domain.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 /*#if BYTE_ORDER == LITTLE_ENDIAN*/

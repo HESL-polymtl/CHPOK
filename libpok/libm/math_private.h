@@ -30,6 +30,7 @@
  * $NetBSD: math_private.h,v 1.13 2008/04/26 23:49:50 christos Exp $
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #ifndef _MATH_PRIVATE_H_

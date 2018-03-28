@@ -21,6 +21,7 @@
  * Placed into the Public Domain, 1994.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

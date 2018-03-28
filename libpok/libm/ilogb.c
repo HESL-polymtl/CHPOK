@@ -32,6 +32,7 @@
  * ilogb(inf/NaN) = 0x7fffffff (no signal is raised)
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

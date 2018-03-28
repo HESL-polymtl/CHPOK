@@ -47,6 +47,7 @@
  *	only cosh(0)=1 is exact for finite x.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 #include "math_private.h"
 #include <libm.h>

@@ -32,6 +32,7 @@
  * with the sign bit of y.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

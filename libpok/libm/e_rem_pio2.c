@@ -32,6 +32,7 @@
  * use __kernel_rem_pio2()
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

@@ -16,6 +16,7 @@
 
 /*	$NetBSD: s_signgam.c,v 1.4 1998/01/09 03:15:46 perry Exp $	*/
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

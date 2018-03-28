@@ -37,6 +37,7 @@
  *		 := sign(x)*log1p(|x| + x^2/(1 + sqrt(1+x^2)))
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <types.h>

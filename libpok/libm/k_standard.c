@@ -1,6 +1,6 @@
 /*
  *                               POK header
- * 
+ *
  * The following file is a part of the POK project. Any modification should
  * made according to the POK licence. You CANNOT use this file or a part of
  * this file is this part of a file for your own project
@@ -9,9 +9,9 @@
  *
  * Please follow the coding guidelines described in doc/CODING_GUIDELINES
  *
- *                                      Copyright (c) 2007-2009 POK team 
+ *                                      Copyright (c) 2007-2009 POK team
  *
- * Created by julien on Sat Jan 31 20:12:07 2009 
+ * Created by julien on Sat Jan 31 20:12:07 2009
  */
 
 /* @(#)k_standard.c 5.1 93/09/24 */
@@ -26,6 +26,7 @@
  * ====================================================
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>
@@ -124,7 +125,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if(_LIB_VERSION == _SVID_) {
-		    (void) WRITE2("acos: DOMAIN error\n", 19);
+		    WRITE2("acos: DOMAIN error\n", 19);
 		  }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -139,7 +140,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if(_LIB_VERSION == _SVID_) {
-		    	(void) WRITE2("asin: DOMAIN error\n", 19);
+		    	WRITE2("asin: DOMAIN error\n", 19);
 		  }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -156,7 +157,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if(_LIB_VERSION == _SVID_) {
-			(void) WRITE2("atan2: DOMAIN error\n", 20);
+			WRITE2("atan2: DOMAIN error\n", 20);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -231,7 +232,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("y0: DOMAIN error\n", 17);
+			WRITE2("y0: DOMAIN error\n", 17);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -249,7 +250,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("y0: DOMAIN error\n", 17);
+			WRITE2("y0: DOMAIN error\n", 17);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -267,7 +268,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("y1: DOMAIN error\n", 17);
+			WRITE2("y1: DOMAIN error\n", 17);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -285,7 +286,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("y1: DOMAIN error\n", 17);
+			WRITE2("y1: DOMAIN error\n", 17);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -303,7 +304,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("yn: DOMAIN error\n", 17);
+			WRITE2("yn: DOMAIN error\n", 17);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -321,7 +322,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("yn: DOMAIN error\n", 17);
+			WRITE2("yn: DOMAIN error\n", 17);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -354,7 +355,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("lgamma: SING error\n", 19);
+			WRITE2("lgamma: SING error\n", 19);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -372,7 +373,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_ERANGE;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("log: SING error\n", 16);
+			WRITE2("log: SING error\n", 16);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -390,7 +391,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("log: DOMAIN error\n", 18);
+			WRITE2("log: DOMAIN error\n", 18);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -408,7 +409,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_ERANGE;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("log10: SING error\n", 18);
+			WRITE2("log10: SING error\n", 18);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -426,7 +427,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("log10: DOMAIN error\n", 20);
+			WRITE2("log10: DOMAIN error\n", 20);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -440,7 +441,7 @@ __kernel_standard(double x, double y, int type)
 		exc.retval = zero;
 		if (_LIB_VERSION != _SVID_) exc.retval = 1.0;
 		else if (!matherr(&exc)) {
-			(void) WRITE2("pow(0,0): DOMAIN error\n", 23);
+			WRITE2("pow(0,0): DOMAIN error\n", 23);
 			errno = POK_ERRNO_EDOM;
 		}
 		break;
@@ -489,7 +490,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("pow(0,neg): DOMAIN error\n", 25);
+			WRITE2("pow(0,neg): DOMAIN error\n", 25);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -507,7 +508,7 @@ __kernel_standard(double x, double y, int type)
 		   errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("neg**non-integral: DOMAIN error\n", 32);
+			WRITE2("neg**non-integral: DOMAIN error\n", 32);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -540,7 +541,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("sqrt: DOMAIN error\n", 19);
+			WRITE2("sqrt: DOMAIN error\n", 19);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -558,7 +559,7 @@ __kernel_standard(double x, double y, int type)
                   errno = POK_ERRNO_EDOM;
                 else if (!matherr(&exc)) {
                   if (_LIB_VERSION == _SVID_) {
-                    (void) WRITE2("fmod:  DOMAIN error\n", 20);
+                    WRITE2("fmod:  DOMAIN error\n", 20);
                   }
                   errno = POK_ERRNO_EDOM;
                 }
@@ -573,7 +574,7 @@ __kernel_standard(double x, double y, int type)
                   errno = POK_ERRNO_EDOM;
                 else if (!matherr(&exc)) {
                   if (_LIB_VERSION == _SVID_) {
-                    (void) WRITE2("remainder: DOMAIN error\n", 24);
+                    WRITE2("remainder: DOMAIN error\n", 24);
                   }
                   errno = POK_ERRNO_EDOM;
                 }
@@ -588,7 +589,7 @@ __kernel_standard(double x, double y, int type)
                   errno = POK_ERRNO_EDOM;
                 else if (!matherr(&exc)) {
                   if (_LIB_VERSION == _SVID_) {
-                    (void) WRITE2("acosh: DOMAIN error\n", 20);
+                    WRITE2("acosh: DOMAIN error\n", 20);
                   }
                   errno = POK_ERRNO_EDOM;
                 }
@@ -603,7 +604,7 @@ __kernel_standard(double x, double y, int type)
                   errno = POK_ERRNO_EDOM;
                 else if (!matherr(&exc)) {
                   if (_LIB_VERSION == _SVID_) {
-                    (void) WRITE2("atanh: DOMAIN error\n", 20);
+                    WRITE2("atanh: DOMAIN error\n", 20);
                   }
                   errno = POK_ERRNO_EDOM;
                 }
@@ -618,7 +619,7 @@ __kernel_standard(double x, double y, int type)
                   errno = POK_ERRNO_EDOM;
                 else if (!matherr(&exc)) {
                   if (_LIB_VERSION == _SVID_) {
-                    (void) WRITE2("atanh: SING error\n", 18);
+                    WRITE2("atanh: SING error\n", 18);
                   }
                   errno = POK_ERRNO_EDOM;
                 }
@@ -657,8 +658,8 @@ __kernel_standard(double x, double y, int type)
                         errno = POK_ERRNO_ERANGE;
                 else if (!matherr(&exc)) {
                         if (_LIB_VERSION == _SVID_) {
-                                (void) WRITE2(exc.name, 2);
-                                (void) WRITE2(": TLOSS error\n", 14);
+                                WRITE2(exc.name, 2);
+                                WRITE2(": TLOSS error\n", 14);
                         }
                         errno = POK_ERRNO_ERANGE;
                 }
@@ -673,8 +674,8 @@ __kernel_standard(double x, double y, int type)
                         errno = POK_ERRNO_ERANGE;
                 else if (!matherr(&exc)) {
                         if (_LIB_VERSION == _SVID_) {
-                                (void) WRITE2(exc.name, 2);
-                                (void) WRITE2(": TLOSS error\n", 14);
+                                WRITE2(exc.name, 2);
+                                WRITE2(": TLOSS error\n", 14);
                         }
                         errno = POK_ERRNO_ERANGE;
                 }
@@ -689,8 +690,8 @@ __kernel_standard(double x, double y, int type)
                         errno = POK_ERRNO_ERANGE;
                 else if (!matherr(&exc)) {
                         if (_LIB_VERSION == _SVID_) {
-                                (void) WRITE2(exc.name, 2);
-                                (void) WRITE2(": TLOSS error\n", 14);
+                                WRITE2(exc.name, 2);
+                                WRITE2(": TLOSS error\n", 14);
                         }
                         errno = POK_ERRNO_ERANGE;
                 }
@@ -705,8 +706,8 @@ __kernel_standard(double x, double y, int type)
                         errno = POK_ERRNO_ERANGE;
                 else if (!matherr(&exc)) {
                         if (_LIB_VERSION == _SVID_) {
-                                (void) WRITE2(exc.name, 2);
-                                (void) WRITE2(": TLOSS error\n", 14);
+                                WRITE2(exc.name, 2);
+                                WRITE2(": TLOSS error\n", 14);
                         }
                         errno = POK_ERRNO_ERANGE;
                 }
@@ -721,8 +722,8 @@ __kernel_standard(double x, double y, int type)
                         errno = POK_ERRNO_ERANGE;
                 else if (!matherr(&exc)) {
                         if (_LIB_VERSION == _SVID_) {
-                                (void) WRITE2(exc.name, 2);
-                                (void) WRITE2(": TLOSS error\n", 14);
+                                WRITE2(exc.name, 2);
+                                WRITE2(": TLOSS error\n", 14);
                         }
                         errno = POK_ERRNO_ERANGE;
                 }
@@ -737,8 +738,8 @@ __kernel_standard(double x, double y, int type)
                         errno = POK_ERRNO_ERANGE;
                 else if (!matherr(&exc)) {
                         if (_LIB_VERSION == _SVID_) {
-                                (void) WRITE2(exc.name, 2);
-                                (void) WRITE2(": TLOSS error\n", 14);
+                                WRITE2(exc.name, 2);
+                                WRITE2(": TLOSS error\n", 14);
                         }
                         errno = POK_ERRNO_ERANGE;
                 }
@@ -771,7 +772,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("gamma: SING error\n", 18);
+			WRITE2("gamma: SING error\n", 18);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -802,7 +803,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_ERANGE;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("log2: SING error\n", 18);
+			WRITE2("log2: SING error\n", 18);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}
@@ -820,7 +821,7 @@ __kernel_standard(double x, double y, int type)
 		  errno = POK_ERRNO_EDOM;
 		else if (!matherr(&exc)) {
 		  if (_LIB_VERSION == _SVID_) {
-			(void) WRITE2("log2: DOMAIN error\n", 20);
+			WRITE2("log2: DOMAIN error\n", 20);
 		      }
 		  errno = POK_ERRNO_EDOM;
 		}

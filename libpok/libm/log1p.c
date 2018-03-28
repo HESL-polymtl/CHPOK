@@ -91,6 +91,7 @@
  *	 See HP-15C Advanced Functions Handbook, p.193.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <types.h>

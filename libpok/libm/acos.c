@@ -31,6 +31,7 @@
  * wrap_acos(x)
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

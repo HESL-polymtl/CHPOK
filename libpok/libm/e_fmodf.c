@@ -35,6 +35,7 @@
  * Method: shift and subtract
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include "math_private.h"

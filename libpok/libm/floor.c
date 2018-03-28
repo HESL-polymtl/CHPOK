@@ -35,6 +35,7 @@
  *	Inexact flag raised if x not equal to floor(x).
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include "math_private.h"

@@ -31,6 +31,7 @@
  * no branching!
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 #include <types.h>
 #include "math_private.h"

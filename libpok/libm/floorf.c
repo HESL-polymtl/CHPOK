@@ -39,6 +39,7 @@
  *	Inexact flag raised if x not equal to floorf(x).
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

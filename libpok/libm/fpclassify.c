@@ -14,6 +14,7 @@
  * Created by julien on Sat Jan 31 15:49:24 2009 
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <libm.h>

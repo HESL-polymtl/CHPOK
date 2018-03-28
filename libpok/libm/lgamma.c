@@ -27,6 +27,7 @@
  */
 
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 /* double lgamma(double x)

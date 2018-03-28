@@ -35,6 +35,7 @@
  * with the sign bit of y.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 #include "math_private.h"
 

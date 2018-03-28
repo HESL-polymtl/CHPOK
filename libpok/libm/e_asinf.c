@@ -1,6 +1,6 @@
 /*
  *                               POK header
- * 
+ *
  * The following file is a part of the POK project. Any modification should
  * made according to the POK licence. You CANNOT use this file or a part of
  * this file is this part of a file for your own project
@@ -9,9 +9,9 @@
  *
  * Please follow the coding guidelines described in doc/CODING_GUIDELINES
  *
- *                                      Copyright (c) 2007-2009 POK team 
+ *                                      Copyright (c) 2007-2009 POK team
  *
- * Created by julien on Fri Jan 30 14:41:34 2009 
+ * Created by julien on Fri Jan 30 14:41:34 2009
  */
 
 /* e_asinf.c -- float version of e_asin.c.
@@ -29,6 +29,7 @@
  * ====================================================
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 #include <libm.h>
 #include "math_private.h"
@@ -68,7 +69,7 @@ __ieee754_asinf(float x)
 	} else if (ix<0x3f000000) {	/* |x|<0.5 */
 	    if(ix<0x32000000) {		/* if |x| < 2**-27 */
 		if(huge+x>one) return x;/* return x with inexact if x!=0*/
-	    } else
+	    } 
 		t = x*x;
 		p = t*(pS0+t*(pS1+t*(pS2+t*(pS3+t*(pS4+t*pS5)))));
 		q = one+t*(qS1+t*(qS2+t*(qS3+t*qS4)));

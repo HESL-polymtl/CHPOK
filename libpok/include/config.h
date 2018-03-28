@@ -6,7 +6,7 @@
 #define POK_NEEDS_DEBUG 1
 #define POK_NEEDS_CONSOLE 1
 
-//#define POK_NEEDS_LIBMATH 1
+#define POK_NEEDS_LIBMATH 1
 //#define POK_NEEDS_ZERO_DIVISION_EXCEPTION 1
 
 /* Configuration from kernel starts*/

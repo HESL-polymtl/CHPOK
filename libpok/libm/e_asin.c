@@ -1,6 +1,6 @@
 /*
  *                               POK header
- * 
+ *
  * The following file is a part of the POK project. Any modification should
  * made according to the POK licence. You CANNOT use this file or a part of
  * this file is this part of a file for your own project
@@ -9,9 +9,9 @@
  *
  * Please follow the coding guidelines described in doc/CODING_GUIDELINES
  *
- *                                      Copyright (c) 2007-2009 POK team 
+ *                                      Copyright (c) 2007-2009 POK team
  *
- * Created by julien on Fri Jan 30 14:41:34 2009 
+ * Created by julien on Fri Jan 30 14:41:34 2009
  */
 
 /* @(#)e_asin.c 5.1 93/09/24 */
@@ -56,6 +56,7 @@
  *
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 
@@ -98,8 +99,8 @@ __ieee754_asin(double x)
 	    return (x-x)/(x-x);		/* asin(|x|>1) is NaN */
 	} else if (ix<0x3fe00000) {	/* |x|<0.5 */
 	    if(ix<0x3e400000) {		/* if |x| < 2**-27 */
-		if(huge+x>one) return x;/* return x with inexact if x!=0*/
-	    } else
+			if(huge+x>one) return x;/* return x with inexact if x!=0*/
+	    }
 		t = x*x;
 		p = t*(pS0+t*(pS1+t*(pS2+t*(pS3+t*(pS4+t*pS5)))));
 		q = one+t*(qS1+t*(qS2+t*(qS3+t*qS4)));
@@ -128,4 +129,3 @@ __ieee754_asin(double x)
 }
 
 #endif
-

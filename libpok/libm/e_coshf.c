@@ -29,6 +29,7 @@
  * ====================================================
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 #include <libm.h>
 #include "math_private.h"

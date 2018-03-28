@@ -33,6 +33,7 @@
  * fabsf(x) returns the absolute value of x.
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 #include <types.h>

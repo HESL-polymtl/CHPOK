@@ -26,6 +26,7 @@
  * ====================================================
  */
 
+#include <config.h>
 #ifdef POK_NEEDS_LIBMATH
 
 /* tan(x)
