@@ -97,9 +97,20 @@ pok_ret_t pok_error_thread_create (uint32_t stack_size, void* __user entry)
 }
 
 // Should be called with local preemption disabled.
-static void take_fixed_action(pok_error_action_t action)
+static void take_fixed_action(pok_error_action_t action, pok_error_id_t error_id)
 {
-    // TODO in case of restart, fill in restart reason (to be inspected later)
+    /*************Modified JB****************/
+    //If the partition restarts, write the reason why
+    if(action == POK_ERROR_ACTION_COLD_START || action == POK_ERROR_ACTION_WARM_START){
+        pok_partition_arinc_t* part = current_partition_arinc;
+        pok_cons_write("[KERNEL] Restarting partition ", 30);
+        pok_cons_write(part->base_part.name, strlen(part->base_part.name));
+        pok_cons_write(" due to: ", 9);
+        const char *msg = get_error_description(error_id);
+        pok_cons_write(msg, strlen(msg));
+        pok_cons_write("\n", 1);
+    }
+    /****************************************/
 
     switch (action) {
         case POK_ERROR_ACTION_IGNORE:
@@ -160,7 +171,7 @@ static pok_bool_t process_error_partition(pok_system_state_t system_state,
 
     action = part->partition_hm_table->actions[system_state][error_id];
 
-    take_fixed_action(action);
+    take_fixed_action(action, error_id);
 
     if(part->nthreads_unrecoverable)
     {
