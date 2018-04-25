@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chpok-configuration xmlns:xi="http://www.w3.org/2001/XInclude">
+    <Partitions>
+        <xi:include href="GPS_P/config.xml" parse="xml"/>
+        <xi:include href="SPDI_P/config.xml" parse="xml"/>
+        <xi:include href="ALPR_P/config.xml" parse="xml"/>
+    </Partitions>
+
+    <Schedule>
+        <!--
+            Slot element is close to A653_PartitionTimeWindowType defined
+            in the standard, but not quite it.
+
+            As extension, we allow to specify time in other units,
+            such as milliseconds (for convenience).
+        -->
+        <Slot Type="Partition" PartitionNameRef="GPS_P" Duration="500ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="SPDI_P" Duration="1000ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="ALPR_P" Duration="500ms" PeriodicProcessingStart="true" />
+    </Schedule>
+
+    <!--
+        This looks like Connection_Table
+        found in schema in older ARINC-653 standard,
+        but it's somewhat different (because that old thing
+        is very inconsistent).
+
+        Recent standard doesn't define this at all.
+    -->
+    <Connection_Table>
+       <Channel>
+           <Source>
+               <Standard_Partition PartitionName="GPS_P" PortName="GPS_SPDI_SEND_P_QPORT" />
+           </Source>
+           <Destination>
+               <Standard_Partition PartitionName="SPDI_P" PortName="GPS_SPDI_RECV_P_QPORT" />
+           </Destination>
+       </Channel>
+       <Channel>
+           <Source>
+               <Standard_Partition PartitionName="GPS_P" PortName="GPS_ALPR_SEND_P_QPORT" />
+           </Source>
+           <Destination>
+               <Standard_Partition PartitionName="ALPR_P" PortName="GPS_ALPR_RECV_P_QPORT" />
+           </Destination>
+       </Channel>
+   </Connection_Table>
+
+</chpok-configuration>

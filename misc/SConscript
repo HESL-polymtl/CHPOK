@@ -72,7 +72,7 @@ except:
 
 log_file_opened = False
 
-# This tells scons to store all file signatures 
+# This tells scons to store all file signatures
 # in a separate .sconsign file in each directory
 SConsignFile(None)
 
@@ -85,7 +85,7 @@ env['PRINT_CMD_LINE_FUNC'] = print_cmd_line
 env['LINKFLAGS'] = '-r'
 env['QEMU_FLAGS'] = ' -serial stdio'
 # 16 MBytes
-env['MAX_PART_SIZE'] = 16 * 2**20
+env['MAX_PART_SIZE'] = 40 * 2**20
 
 # Architecture-dependent parameters
 bsp_arch_dict = {
@@ -199,7 +199,7 @@ bsp_qemu_dict = {
 }
 env.Append(QEMU_FLAGS = bsp_qemu_dict[env['BSP']])
 
-env.Append(QEMU_FLAGS = ' -kernel '+env['BUILD_DIR']+'pok.elf')
+env.Append(QEMU_FLAGS = ' -m 1G -kernel '+env['BUILD_DIR']+'pok.elf')
 
 #env.Append(QEMU_FLAGS = ' -display none')
 env.Command('run_cmd', [], env['QEMU']+env['QEMU_FLAGS'])
