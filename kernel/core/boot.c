@@ -81,7 +81,6 @@ void jet_boot (void)
    }
 #endif
 
-
 #ifdef POK_NEEDS_PARTITIONS
 #if defined(POK_NEEDS_GDB) && defined(POK_NEEDS_WAIT_FOR_GDB)
   printf("Waiting for GDB connection ...\n");

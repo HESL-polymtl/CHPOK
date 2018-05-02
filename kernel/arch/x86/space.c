@@ -33,7 +33,7 @@
 
 #include <asp/alloc.h>
 
-#define KERNEL_STACK_SIZE 8192
+#define KERNEL_STACK_SIZE 16384
 
 void ja_space_layout_get(jet_space_id space_id,
     struct jet_space_layout* space_layout)
@@ -74,7 +74,7 @@ void ja_user_space_jump(
     /*
      * Reuse layout of interrupt_frame structure, allocated on stack,
      * for own purposes.
-     * 
+     *
      * Usage of this structure here is unrelated to interrupts
      * because it is allocated not at the *beginning* of the stack.
      */
@@ -133,7 +133,7 @@ void ja_space_init(void)
     {
         struct ja_x86_space* space = &ja_spaces[i];
 
-        /* 
+        /*
          * Code and data segments should be aligned on 4k;
          */
         size_t size_total = space->size_normal;
@@ -221,9 +221,9 @@ struct jet_fp_store
   int todo;
 };
 
-/* 
+/*
  * Allocate place for store floating point registers.
- * 
+ *
  * May be called only during OS init.
  */
 struct jet_fp_store* ja_alloc_fp_store(void)

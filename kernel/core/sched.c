@@ -49,9 +49,9 @@ volatile pok_bool_t pok_in_user_space = 0;
 #endif
 
 #ifdef POK_NEEDS_MONITOR
-/* 
+/*
  * Whether current partition has `.is_paused` flag set.
- * 
+ *
  * This flag affects on the place, where currently used context should
  * be stored on context switch.
  * From the other side, the flag can be changed *outside* of scheduler.
@@ -69,9 +69,9 @@ static void idle_function(void)
 }
 #endif
 
-/* 
+/*
  * Pointer to the store area for last executed (user) thread.
- * 
+ *
  * If no thread has been executed yet, or the last one dies, this is NULL.
  */
 struct jet_fp_store* fp_store_last = NULL;
@@ -128,10 +128,10 @@ static void intra_partition_switch(void)
 
         if(*old_sp == NULL)
         {
-            /* 
+            /*
              * Restart is requested by currently executed context.
              * (new context is idle, so it doesn't need restart.)
-             * 
+             *
              * Perform jump instead of switch.
              */
              jet_context_jump(*new_sp);
@@ -139,10 +139,10 @@ static void intra_partition_switch(void)
         }
         else if(*new_sp == NULL)
         {
-            /* 
+            /*
              * Restart is requested by new context.
              * (current context is idle, so it doesn't need restart.)
-             * 
+             *
              * Need to initialize new context before switch.
              */
             *new_sp = jet_context_init(
@@ -197,10 +197,10 @@ static void inter_partition_switch(pok_partition_t* part)
 
     if(*new_sp == NULL)
     {
-        /* 
+        /*
          * Restart is requested by new context.
          * (current context is different)
-         * 
+         *
          * Need to initialize new context before switch.
          */
         *new_sp = jet_context_init(part->initial_sp, &start_partition);
@@ -255,6 +255,7 @@ void pok_sched_restart (void)
         pok_space_switch(0xff); // TODO: This should disable all user space tables
 
     kernel_state = POK_SYSTEM_STATE_OS_PART;
+
     jet_context_jump(*new_sp);
 }
 
@@ -266,9 +267,9 @@ void pok_sched_start (void)
     pok_sched_restart();
 }
 
-/* 
+/*
  * Perform scheduling.
- * 
+ *
  * Should be called with preemption disabled.
  */
 static void pok_sched(void)
@@ -361,7 +362,7 @@ void __pok_preemption_enable(void)
 
 /*
  * Forward implementation, which iterates over all slots.
- * 
+ *
  * May be optimized in the future.
  */
 pok_time_t get_next_periodic_processing_start(void)

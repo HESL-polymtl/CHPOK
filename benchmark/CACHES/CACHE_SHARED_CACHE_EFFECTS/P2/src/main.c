@@ -67,7 +67,7 @@
 #define CACHE_SETS_NUMBER_L2 (CACHE_SIZE_L2 / (CACHE_ASSOC_NUMBER_L2 * CACHE_LINE_SIZE_L2))
 #define CACHE_SETS_NUMBER_L3 (CACHE_SIZE_L3 / (CACHE_ASSOC_NUMBER_L3 * CACHE_LINE_SIZE_L3))
 
-#define DATA_SIZE (CACHE_SIZE_L3 / 2)
+#define DATA_SIZE (CACHE_SIZE_L3)
 
 /*******************************************************************************
  * PARTITION SPECIFIC VARIABLES
