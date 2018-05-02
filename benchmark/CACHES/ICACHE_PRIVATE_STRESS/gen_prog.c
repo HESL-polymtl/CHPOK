@@ -151,6 +151,25 @@ int main(int argc, char** argv)
 	char          filename[MAX_FILENAME_LENGTH];
 	FILE*         output_file;
 
+	printf("Output file name (%u characters max): ", MAX_FILENAME_LENGTH - 1);
+	scanf("%32s", filename);
+	scanf("%*[^\n]");
+	getchar();
+	filename[MAX_FILENAME_LENGTH - 1] = 0;
+
+	printf("Set the program size in byte: ");
+	scanf("%10u", &prog_size);
+	scanf("%*[^\n]");
+	getchar();
+
+	/* Open output file */
+	output_file = fopen(filename, "w");
+	if(output_file == NULL)
+	{
+		perror("Cannot open output file:\t");
+		return -1;
+	}
+
 	printf("Select arch:\n\t0. X86\n\t1. PowerPC\n\t2. ARM\n");
 	do
 	{
@@ -164,25 +183,6 @@ int main(int argc, char** argv)
 			printf("Wrong architecture\n");
 		}
 	} while(select > 2);
-
-	printf("Set the program size in byte: ");
-	scanf("%10u", &prog_size);
-	scanf("%*[^\n]");
-	getchar();
-
-	printf("Output file name (%u characters max): ", MAX_FILENAME_LENGTH - 1);
-	scanf("%32s", filename);
-	scanf("%*[^\n]");
-	getchar();
-	filename[MAX_FILENAME_LENGTH - 1] = 0;
-
-	/* Open output file */
-	output_file = fopen(filename, "w");
-	if(output_file == NULL)
-	{
-		perror("Cannot open output file:\t");
-		return -1;
-	}
 
 	/* Arch selection */
 	switch(select)
@@ -207,6 +207,8 @@ int main(int argc, char** argv)
 		perror("Error while closing the output file:\t");
 		return -1;
 	}
+
+	printf("File saved\n");
 
 	return 0;
 }
