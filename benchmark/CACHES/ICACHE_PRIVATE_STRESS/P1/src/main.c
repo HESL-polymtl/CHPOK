@@ -44,9 +44,12 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../../BENCH_TOOLS/config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
+
 #define ARCH_X86 1
 #define ARCH_PPC 0
 #define ARCH_ARM 0
@@ -58,31 +61,6 @@
 #elif ARCH_ARM
     #include "icache_flood_arm.h"
 #endif
-
-/*******************************************************************************
- * PARTITION SPECIFIC VARIABLES
- ******************************************************************************/
-
- /* I5 750 Intel processor:
-  * Private L1 and L2
-  */
- #define CACHE_SIZE_L1 32768
- #define CACHE_SIZE_L2 262144
- #define CACHE_SIZE_L3 8388608
-
- #define CACHE_LINE_SIZE_L1 64
- #define CACHE_LINE_SIZE_L2 64
- #define CACHE_LINE_SIZE_L3 64
-
- #define CACHE_ASSOC_NUMBER_L1 8
- #define CACHE_ASSOC_NUMBER_L2 8
- #define CACHE_ASSOC_NUMBER_L3 16
-
- #define CACHE_SETS_NUMBER_L1 (CACHE_SIZE_L1 / (CACHE_ASSOC_NUMBER_L1 * CACHE_LINE_SIZE_L1))
- #define CACHE_SETS_NUMBER_L2 (CACHE_SIZE_L2 / (CACHE_ASSOC_NUMBER_L2 * CACHE_LINE_SIZE_L2))
- #define CACHE_SETS_NUMBER_L3 (CACHE_SIZE_L3 / (CACHE_ASSOC_NUMBER_L3 * CACHE_LINE_SIZE_L3))
-
- #define DATA_SIZE (CACHE_SIZE_L3)
 
 /*******************************************************************************
  * TESTS FUNCTIONS

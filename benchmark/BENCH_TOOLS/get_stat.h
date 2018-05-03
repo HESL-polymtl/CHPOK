@@ -5,14 +5,7 @@
  *    Alexy Torres Aurora Dugo
  *    Jean-Baptiste Lefoul
  *
- * Test: CPU stress tests
- * Activity:
- *    Square root computation
- *    Prime counter
- *
- * These tests aim to use the CPU at its maximum capacity. Memory footprint of
- * these tests should be the lowest possible.
- *
+ * Global statistics tools and instrumentation.
  ******************************************************************************/
 
 #ifndef __GET_STAT_H_

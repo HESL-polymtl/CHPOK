@@ -40,30 +40,13 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../../BENCH_TOOLS/config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
 
- #define MIN(v1, v2) (v1 < v2 ? v1 : v2)
-
-/* I5 750 Intel processor:
- * Private L1 and L2
- */
-#define CACHE_SIZE_L1 32768
-#define CACHE_SIZE_L2 262144
-#define CACHE_SIZE_L3 8388608
-
-#define CACHE_LINE_SIZE_L1 64
-#define CACHE_LINE_SIZE_L2 64
-#define CACHE_LINE_SIZE_L3 64
-
-#define CACHE_ASSOC_NUMBER_L1 8
-#define CACHE_ASSOC_NUMBER_L2 8
-#define CACHE_ASSOC_NUMBER_L3 16
-
-#define CACHE_SETS_NUMBER_L1 (CACHE_SIZE_L1 / (CACHE_ASSOC_NUMBER_L1 * CACHE_LINE_SIZE_L1))
-#define CACHE_SETS_NUMBER_L2 (CACHE_SIZE_L2 / (CACHE_ASSOC_NUMBER_L2 * CACHE_LINE_SIZE_L2))
-#define CACHE_SETS_NUMBER_L3 (CACHE_SIZE_L3 / (CACHE_ASSOC_NUMBER_L3 * CACHE_LINE_SIZE_L3))
+#define MIN(v1, v2) (v1 < v2 ? v1 : v2)
 
 #define DATA_SIZE (CACHE_SIZE_L3 / 2)
 
@@ -72,19 +55,19 @@
  * set the quantity of data to be walked, depending on the CLEAR_CACHE
  * value, a small walk size will only produce cache miss on the first walk
  */
- #define WALK_SIZE DATA_SIZE
+#define WALK_SIZE DATA_SIZE
 
- /* Define if at the end of each walk, the cache must be cleared. Actually since
-  * we want the tests to be portable and not all OS allow us to clear the caches
-  * we use two separate banks that are accessed one walk after the other.
-  * If corretly set (and if this is the behaviour you want), the fist walk will
-  * populate the entier cache. The second walk will use the second bank and
-  * always miss. The third walk will use the first banks that has been evicted
-  * with the second walk, etc.
-  *
-  * When CLEAR_CACHE is disabled, only one bank is used.
-  */
- #define CLEAR_CACHE 1
+/* Define if at the end of each walk, the cache must be cleared. Actually since
+ * we want the tests to be portable and not all OS allow us to clear the caches
+ * we use two separate banks that are accessed one walk after the other.
+ * If corretly set (and if this is the behaviour you want), the fist walk will
+ * populate the entier cache. The second walk will use the second bank and
+ * always miss. The third walk will use the first banks that has been evicted
+ * with the second walk, etc.
+ *
+ * When CLEAR_CACHE is disabled, only one bank is used.
+ */
+#define CLEAR_CACHE 1
 
 /*******************************************************************************
  * PARTITION SPECIFIC VARIABLES

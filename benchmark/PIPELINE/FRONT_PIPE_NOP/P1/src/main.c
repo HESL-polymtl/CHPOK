@@ -23,12 +23,11 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../../BENCH_TOOLS/config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
-#define ARCH_X86 1
-#define ARCH_PPC 0
-#define ARCH_ARM 0
 
 /*******************************************************************************
  * PARTITION SPECIFIC VARIABLES

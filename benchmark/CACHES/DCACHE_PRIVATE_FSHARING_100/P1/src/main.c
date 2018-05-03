@@ -45,30 +45,13 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../../BENCH_TOOLS/config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
 
-/* I5 750 Intel processor:
- * Private L1 and L2
- */
-#define CACHE_SIZE_L1 32768
-#define CACHE_SIZE_L2 262144
-#define CACHE_SIZE_L3 8388608
-
-#define CACHE_LINE_SIZE_L1 64
-#define CACHE_LINE_SIZE_L2 64
-#define CACHE_LINE_SIZE_L3 64
-
-#define CACHE_ASSOC_NUMBER_L1 8
-#define CACHE_ASSOC_NUMBER_L2 8
-#define CACHE_ASSOC_NUMBER_L3 16
-
-#define CACHE_SETS_NUMBER_L1 (CACHE_SIZE_L1 / (CACHE_ASSOC_NUMBER_L1 * CACHE_LINE_SIZE_L1))
-#define CACHE_SETS_NUMBER_L2 (CACHE_SIZE_L2 / (CACHE_ASSOC_NUMBER_L2 * CACHE_LINE_SIZE_L2))
-#define CACHE_SETS_NUMBER_L3 (CACHE_SIZE_L3 / (CACHE_ASSOC_NUMBER_L3 * CACHE_LINE_SIZE_L3))
-
-#define DATA_SIZE (8388608 / 2)
+#define DATA_SIZE (CACHE_SIZE_L3 / 2)
 
 /*******************************************************************************
  * PARTITION SPECIFIC VARIABLES
@@ -86,14 +69,14 @@ void* cache_thread_func_0(void)
     PARTITION_STATUS_TYPE pr_stat;
 
 
-    uint32_t inc_size = CACHE_SIZE_L1 / 4;
+    uint32_t inc_size = CACHE_SIZE_L1_DATA / 4;
     uint32_t start_size = 0;
 
     uint32_t nb_exec = 0;
 
     uint32_t start_address;
     uint32_t end_address;
-    uint32_t inc_address = CACHE_SIZE_L1 / CACHE_SETS_NUMBER_L1;
+    uint32_t inc_address = CACHE_SIZE_L1_DATA / CACHE_SETS_NUMBER_L1_DATA;
 
     uint32_t target_cache_line, current_target;
 
@@ -129,16 +112,16 @@ void* cache_thread_func_0(void)
             /* Compute the start address of the range */
             start_address = (uint32_t)data;
             current_target = (start_address %
-                              (CACHE_SIZE_L1 / CACHE_SETS_NUMBER_L1)) /
-                             CACHE_LINE_SIZE_L1;
+                              (CACHE_SIZE_L1_DATA / CACHE_SETS_NUMBER_L1_DATA)) /
+                             CACHE_LINE_SIZE_L1_DATA;
 
             while(target_cache_line != current_target)
             {
                 start_address++;
 
                 current_target = (start_address %
-                                  (CACHE_SIZE_L1 / CACHE_SETS_NUMBER_L1)) /
-                                 CACHE_LINE_SIZE_L1;
+                                  (CACHE_SIZE_L1_DATA / CACHE_SETS_NUMBER_L1_DATA)) /
+                                 CACHE_LINE_SIZE_L1_DATA;
             }
 
             start_address += inc_address;
