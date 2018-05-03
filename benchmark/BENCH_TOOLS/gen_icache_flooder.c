@@ -46,7 +46,7 @@ void write_asm_x86(const unsigned int prog_size, FILE* output_file)
 	while(current_size < prog_size)
 	{
 		/* NOP */
-		fprintf(output_file, "        \"mov %%ax, %%ax\\n\"\n"); /* 1B */
+		fprintf(output_file, "        \"nop\\n\"\n"); /* 1B */
 		++current_size;
 	}
 
