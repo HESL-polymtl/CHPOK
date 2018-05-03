@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * ARINC-653 Multicore RTOS Benchmark
+ *
+ * Developped by:
+ *    Alexy Torres Aurora Dugo
+ *    Jean-Baptiste Lefoul
+ *
+ * Generate assembly code allowing to fill the instruction cache.
+ * The generator is alble to generate x86, ARMv5 and PowerPC assembly code.
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
