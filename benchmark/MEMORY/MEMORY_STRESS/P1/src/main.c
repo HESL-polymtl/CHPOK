@@ -46,8 +46,6 @@
  * TESTS SETTINGS
  ******************************************************************************/
 
-#define MIN(v1, v2) (v1 < v2 ? v1 : v2)
-
 #define DATA_SIZE (CACHE_SIZE_L3 / 2)
 
 
