@@ -149,7 +149,7 @@ env['RANLIB']  = env['PREFIX'] + 'ranlib'
 env['LIBGCC'] = os.popen(env['CC']+' -print-libgcc-file-name').read().replace('\n', '')
 
 Import('cflags')
-env['CFLAGS'] = '-std=gnu99 -iwithprefix include -Wall -Wuninitialized -ffreestanding -nostdlib -nostdinc -g '
+env['CFLAGS'] = '-std=gnu99 -iwithprefix include -Wall -Wuninitialized -ffreestanding -nostdlib -nostdinc -g -O0'
 env.Append(CFLAGS = cflags)
 
 cflags_arch_dict = {

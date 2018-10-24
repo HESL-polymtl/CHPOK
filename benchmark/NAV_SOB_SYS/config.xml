@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chpok-configuration xmlns:xi="http://www.w3.org/2001/XInclude">
+    <Partitions>
+        <xi:include href="GPS_P/config.xml" parse="xml"/>
+        <xi:include href="PROC_P/config.xml" parse="xml"/>
+        <xi:include href="SOBE_P/config.xml" parse="xml"/>
+    </Partitions>
+
+    <Schedule>
+        <!--
+            Slot element is close to A653_PartitionTimeWindowType defined
+            in the standard, but not quite it.
+
+            As extension, we allow to specify time in other units,
+            such as milliseconds (for convenience).
+        -->
+        <Slot Type="Partition" PartitionNameRef="GPS_P" Duration="2500ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="PROC_P" Duration="7500ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="SOBE_P" Duration="5000ms" PeriodicProcessingStart="true" />
+    </Schedule>
+
+    <!--
+        This looks like Connection_Table
+        found in schema in older ARINC-653 standard,
+        but it's somewhat different (because that old thing
+        is very inconsistent).
+
+        Recent standard doesn't define this at all.
+    -->
+    <Connection_Table>
+       <Channel>
+           <Source>
+               <Standard_Partition PartitionName="GPS_P" PortName="GPS_PROC_SEND_P_SPORT" />
+           </Source>
+           <Destination>
+               <Standard_Partition PartitionName="PROC_P" PortName="GPS_PROC_RECV_P_SPORT" />
+           </Destination>
+       </Channel>
+   </Connection_Table>
+
+</chpok-configuration>

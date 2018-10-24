@@ -163,6 +163,7 @@ static void intra_partition_switch(void)
     }
 }
 
+
 /* Switch to the new partition. */
 static void inter_partition_switch(pok_partition_t* part)
 {
@@ -267,6 +268,16 @@ void pok_sched_start (void)
     pok_sched_restart();
 }
 
+/* Static variables used to trace with qemu */
+#define QEMU_TRACING 1
+
+#ifdef QEMU_TRACING
+static int started = 0;
+static int ended = 0;
+static int nb_major_time_frame = 0;
+#endif /* QEMU_TRACE */
+/********************************************/
+
 /*
  * Perform scheduling.
  *
@@ -289,6 +300,22 @@ static void pok_sched(void)
     {
         pok_sched_next_major_frame += pok_config_scheduling_major_frame;
         pok_sched_current_slot = 0;
+
+        /********Added code for qemu trace ************/
+#ifdef QEMU_TRACING
+        ++nb_major_time_frame;
+        if(started && !ended && (nb_major_time_frame >= 10))
+        {
+            __asm__ __volatile__(".byte 0x0F, 0xA7, 0x00, 0x00\n");
+            ended = 1;
+        }
+        else if(!started)
+        {
+            __asm__ __volatile__(".byte 0x0F, 0xA6, 0x00, 0x00\n");
+            started = 1;
+        }
+#endif /* QEMU_TRACING */
+        /*********************************************/
     }
     pok_sched_next_deadline += pok_module_sched[pok_sched_current_slot].duration;
 
@@ -517,7 +544,7 @@ void pok_partition_jump_user(void (* __user entry)(void),
 
 void pok_partition_restart(void)
 {
-	pok_partition_t* part = current_partition;
+    pok_partition_t* part = current_partition;
     assert(part);
 
     pok_preemption_disable();
@@ -527,7 +554,7 @@ void pok_partition_restart(void)
     // For the case of overflow.
     if(part->partition_generation == 0) part->partition_generation = 1;
 
-	part->sp = 0;
+    pqrt->sp = 0;
     sched_need_recheck = TRUE;
 
     pok_preemption_enable();
