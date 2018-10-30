@@ -21,7 +21,7 @@
 #ifndef __GPS_NAV_CONFIG_H_
 #define __GPS_NAV_CONFIG_H_
 
-#define GPS_PERIOD    1500000000 /* GPS period in ms */
+#define GPS_PERIOD    15000000000 /* GPS period in ms */
 #define EARTH_RAD     6378.1     /* Earth Radius in Km */
 
 #define MIN_LAT   40.044000

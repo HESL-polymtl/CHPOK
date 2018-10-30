@@ -166,8 +166,7 @@ void* gen_thread_func(void)
             {
                 GET_ET_STAT_2_3
             }
-
-    
+            
             /* Get new distance */
             dist_since_last = ((GPS_PERIOD / 1000000000.0) * PLANE_SPEED) /
                                 3600.0;
@@ -254,7 +253,7 @@ int main()
     tattr_gen.DEADLINE      = HARD;
     tattr_gen.PERIOD        = GPS_PERIOD;
     tattr_gen.STACK_SIZE    = 2000;
-    tattr_gen.TIME_CAPACITY = 150000000;
+    tattr_gen.TIME_CAPACITY = 1500000000;
     tattr_gen.BASE_PRIORITY = 25;
     memcpy(tattr_gen.NAME, "GPS_GEN_A653\0", 13 * sizeof(char));
 
@@ -263,7 +262,7 @@ int main()
     tattr_com.DEADLINE      = HARD;
     tattr_com.PERIOD        = GPS_PERIOD;
     tattr_com.STACK_SIZE    = 2000;
-    tattr_com.TIME_CAPACITY = 100000000;
+    tattr_com.TIME_CAPACITY = 1000000000;
     tattr_com.BASE_PRIORITY = 50;
     memcpy(tattr_com.NAME, "GPS_COM_A653\0", 13 * sizeof(char));
 

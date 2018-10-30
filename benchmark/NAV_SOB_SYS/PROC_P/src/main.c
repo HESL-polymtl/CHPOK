@@ -39,7 +39,6 @@
  * TESTS SETTINGS
  ******************************************************************************/
 
-#define GENERATOR_LOAD 3000  /* Processing simulation */
 //#define VERBOSE_OUTPUT_PROC
 #define OUTPUT_PROC
 
@@ -208,7 +207,6 @@ void* pro_alpr_thread_func(void)
             printf("[PRO] ERROR Cannot wait for semaphore [%d]\n", ret_type);
             return (void*)1;
         }
-
    
         /* Get the distance since last point */
         lat = TO_RAD((current_position.lat - last_position.lat));
@@ -387,7 +385,7 @@ int main ()
     tattr_com.DEADLINE      = HARD;
     tattr_com.PERIOD        = GPS_PERIOD;
     tattr_com.STACK_SIZE    = 2000;
-    tattr_com.TIME_CAPACITY = 500000000;
+    tattr_com.TIME_CAPACITY = 5000000000;
     tattr_com.BASE_PRIORITY = 1;
 
     memcpy(&tattr_com.NAME, "PROC_COM_A653\0", 14 * sizeof(char));
@@ -397,7 +395,7 @@ int main ()
     tattr_pro_spdi.DEADLINE      = HARD;
     tattr_pro_spdi.PERIOD        = GPS_PERIOD;
     tattr_pro_spdi.STACK_SIZE    = 2000;
-    tattr_pro_spdi.TIME_CAPACITY = 375000000;
+    tattr_pro_spdi.TIME_CAPACITY = 3750000000;
     tattr_pro_spdi.BASE_PRIORITY = 1;
 
     memcpy(&tattr_pro_spdi.NAME, "PROC_SPDI_A653\0", 15 * sizeof(char));
@@ -407,7 +405,7 @@ int main ()
     tattr_pro_alpr.DEADLINE      = HARD;
     tattr_pro_alpr.PERIOD        = GPS_PERIOD;
     tattr_pro_alpr.STACK_SIZE    = 2000;
-    tattr_pro_alpr.TIME_CAPACITY = 375000000;
+    tattr_pro_alpr.TIME_CAPACITY = 3750000000;
     tattr_pro_alpr.BASE_PRIORITY = 5;
 
     memcpy(&tattr_pro_alpr.NAME, "PROC_ALPR_A653\0", 15 * sizeof(char));

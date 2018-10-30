@@ -14,9 +14,9 @@
             As extension, we allow to specify time in other units,
             such as milliseconds (for convenience).
         -->
-        <Slot Type="Partition" PartitionNameRef="GPS_P" Duration="250ms" PeriodicProcessingStart="true" />
-        <Slot Type="Partition" PartitionNameRef="PROC_P" Duration="750ms" PeriodicProcessingStart="true" />
-        <Slot Type="Partition" PartitionNameRef="SOBE_P" Duration="500ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="GPS_P" Duration="2500ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="PROC_P" Duration="7500ms" PeriodicProcessingStart="true" />
+        <Slot Type="Partition" PartitionNameRef="SOBE_P" Duration="5000ms" PeriodicProcessingStart="true" />
     </Schedule>
 
     <!--
