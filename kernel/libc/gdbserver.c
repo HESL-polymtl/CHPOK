@@ -985,7 +985,7 @@ static void gdb_state_store_registers(struct gdb_state* tc)
         ea = tc->current_ea;
     }
 #ifdef __PPC__
-    printf("Flush registers. pc = 0x%lx\n", registers[pc]);
+    printf("Flush registers. pc = 0x%lx\n", (long unsigned int)registers[pc]);
 #endif
 #ifdef __i386__
     printf("Flush registers. PC = 0x%lx\n", (long unsigned int)registers[PC]);

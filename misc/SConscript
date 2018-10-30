@@ -109,7 +109,7 @@ env['LIBPOK_CPPPATH'] = [
 
 
 arch_prefix_dict = {
-    'ppc':    'powerpc-elf-',
+    'ppc':    'powerpc-linux-gnu-',
     'x86':    ''
 }
 
@@ -161,8 +161,8 @@ env.Append(CFLAGS = cflags_arch_dict[env['ARCH']])
 env['ASFLAGS'] = env['CFLAGS']
 
 bsp_cpu_dict = {
-    'e500mc':          ' -mcpu=e500mc',
-    'e500_highmem':    ' -mcpu=e500mc',
+    'e500mc':          ' -mcpu=8540',
+    'e500_highmem':    ' -mcpu=8540',
     'p3041':           ' -mcpu=e500mc',
     'x86-qemu':        ''
 }
@@ -192,14 +192,14 @@ arch_partition_ldscript_dict = {
 env['LDSCRIPT_PARTITION'] = arch_partition_ldscript_dict.get(env['ARCH'])
 
 bsp_qemu_dict = {
-    'e500mc':          ' -M ppce500 -cpu e500mc',
-    'e500_highmem':    ' -M ppce500 -cpu e500mc',
+    'e500mc':          ' -M ppce500 -cpu e500',
+    'e500_highmem':    ' -M ppce500 -cpu e500',
     'p3041':           ' -M ppce500 -cpu e500mc',
     'x86-qemu':        ''
 }
 env.Append(QEMU_FLAGS = bsp_qemu_dict[env['BSP']])
 
-env.Append(QEMU_FLAGS = ' -m 1G -kernel '+env['BUILD_DIR']+'pok.elf')
+env.Append(QEMU_FLAGS = ' -m 1G -serial /dev/stdout -kernel '+env['BUILD_DIR']+'pok.elf')
 
 #env.Append(QEMU_FLAGS = ' -display none')
 env.Command('run_cmd', [], env['QEMU']+env['QEMU_FLAGS'])
