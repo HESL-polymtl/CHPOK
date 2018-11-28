@@ -269,9 +269,9 @@ void pok_sched_start (void)
 }
 
 /* Static variables used to trace with qemu */
-#define QEMU_TRACING 1
+#define QEMU_TRACING 0
 
-#ifdef QEMU_TRACING
+#if QEMU_TRACING
 static int started = 0;
 static int ended = 0;
 static int nb_major_time_frame = 0;
@@ -302,7 +302,7 @@ static void pok_sched(void)
         pok_sched_current_slot = 0;
 
         /********Added code for qemu trace ************/
-#ifdef QEMU_TRACING
+#if QEMU_TRACING
         ++nb_major_time_frame;
         if(started && !ended && (nb_major_time_frame >= 10))
         {
@@ -554,7 +554,7 @@ void pok_partition_restart(void)
     // For the case of overflow.
     if(part->partition_generation == 0) part->partition_generation = 1;
 
-    pqrt->sp = 0;
+    part->sp = 0;
     sched_need_recheck = TRUE;
 
     pok_preemption_enable();
