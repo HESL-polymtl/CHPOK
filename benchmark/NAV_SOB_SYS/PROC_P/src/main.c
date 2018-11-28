@@ -39,7 +39,6 @@
  * TESTS SETTINGS
  ******************************************************************************/
 
-#define GENERATOR_LOAD 30  /* Processing simulation */
 //#define VERBOSE_OUTPUT_PROC
 #define OUTPUT_PROC
 
@@ -117,47 +116,43 @@ void* pro_alpr_thread_func(void)
             return (void*)1;
         }
 
-        /* Computation simulation */
-        for(volatile uint32_t j = 0; j < GENERATOR_LOAD / 300 + 1; ++j)
+        nearest_id = 0;
+        min_distance = DBL_MAX;
+
+        /* Get nearest point for altitude */
+        for(i = 0; i < TERRAIN_SAMPLE_SIZE; ++i)
         {
-            nearest_id = 0;
-            min_distance = DBL_MAX;
-
-            /* Get nearest point for altitude */
-            for(i = 0; i < TERRAIN_SAMPLE_SIZE; ++i)
+            /* Get distance */
+            distance = get_distance(current_position.lat,
+                                    current_position.lon,
+                                    alt_array[i].lat,
+                                    alt_array[i].lon);
+            if(distance < min_distance)
             {
-                /* Get distance */
-                distance = get_distance(current_position.lat,
-                                        current_position.lon,
-                                        alt_array[i].lat,
-                                        alt_array[i].lon);
-                if(distance < min_distance)
-                {
-                    nearest_id = i;
-                    min_distance = distance;
-                }
+                nearest_id = i;
+                min_distance = distance;
             }
-            current_altitude = alt_array[nearest_id].value;
-
-            nearest_id = 0;
-            min_distance = DBL_MAX;
-
-            /* Get nearest point for pressure */
-            for(i = 0; i < TERRAIN_SAMPLE_SIZE; ++i)
-            {
-                /* Get distance */
-                distance = get_distance(current_position.lat,
-                                        current_position.lon,
-                                        press_array[i].lat,
-                                        press_array[i].lon);
-                if(distance < min_distance)
-                {
-                    nearest_id = i;
-                    min_distance = distance;
-                }
-            }
-            current_pressure = press_array[nearest_id].value;
         }
+        current_altitude = alt_array[nearest_id].value;
+
+        nearest_id = 0;
+        min_distance = DBL_MAX;
+
+        /* Get nearest point for pressure */
+        for(i = 0; i < TERRAIN_SAMPLE_SIZE; ++i)
+        {
+            /* Get distance */
+            distance = get_distance(current_position.lat,
+                                    current_position.lon,
+                                    press_array[i].lat,
+                                    press_array[i].lon);
+            if(distance < min_distance)
+            {
+                nearest_id = i;
+                min_distance = distance;
+            }
+        }
+        current_pressure = press_array[nearest_id].value;
 
 #ifdef VERBOSE_OUTPUT_PROC
         printf("[p%ld:%lld|%lld|%d] COMPUTED PLANE SETTINGS: Altitude %fft, Pressure %fhPa\n",
@@ -212,41 +207,37 @@ void* pro_alpr_thread_func(void)
             printf("[PRO] ERROR Cannot wait for semaphore [%d]\n", ret_type);
             return (void*)1;
         }
+   
+        /* Get the distance since last point */
+        lat = TO_RAD((current_position.lat - last_position.lat));
+        lon = TO_RAD((current_position.lon - last_position.lon));
 
-        /* Computation simulation */
-        for(volatile uint32_t j = 0; j < GENERATOR_LOAD; ++j)
+        d_1 = sin(lat / 2) * sin(lat / 2) +
+                        cos(TO_RAD(current_position.lat)) *
+                        cos(TO_RAD(last_position.lat)) *
+                        sin(lon / 2) * sin(lon / 2);
+        d_2 = 2 * atan2(sqrt(d_1), sqrt(1 - d_1));
+        distance = d_2 * EARTH_RAD;
+
+        /* Compute speed */
+        speed = distance *  (double)HOUR / (double)GPS_PERIOD;
+
+        /* Compute bearing */
+        lat1 = TO_RAD(current_position.lat);
+        lon1 = TO_RAD(current_position.lon);
+        lon2 = TO_RAD(last_position.lon);
+        lat2 = TO_RAD(last_position.lat);
+
+        b_1 = sin(lon2 - lon1) * cos(lat2);
+        b_2 = cos(lat2) * sin(lat2) -
+                sin(lat1) * cos(lat2) * cos(lon2 - lon1);
+
+        bearing = TO_DEG(atan2(b_1, b_2)) + 360.0;
+
+        /* Mod */
+        while(bearing >= 360.0)
         {
-            /* Get the distance since last point */
-            lat = TO_RAD((current_position.lat - last_position.lat));
-            lon = TO_RAD((current_position.lon - last_position.lon));
-
-            d_1 = sin(lat / 2) * sin(lat / 2) +
-                         cos(TO_RAD(current_position.lat)) *
-                         cos(TO_RAD(last_position.lat)) *
-                         sin(lon / 2) * sin(lon / 2);
-            d_2 = 2 * atan2(sqrt(d_1), sqrt(1 - d_1));
-            distance = d_2 * EARTH_RAD;
-
-            /* Compute speed */
-            speed = distance *  (double)HOUR / (double)GPS_PERIOD;
-
-            /* Compute bearing */
-            lat1 = TO_RAD(current_position.lat);
-            lon1 = TO_RAD(current_position.lon);
-            lon2 = TO_RAD(last_position.lon);
-            lat2 = TO_RAD(last_position.lat);
-
-            b_1 = sin(lon2 - lon1) * cos(lat2);
-            b_2 = cos(lat2) * sin(lat2) -
-                  sin(lat1) * cos(lat2) * cos(lon2 - lon1);
-
-            bearing = TO_DEG(atan2(b_1, b_2)) + 360.0;
-
-            /* Mod */
-            while(bearing >= 360.0)
-            {
-                 bearing -= 360.0;
-            }
+                bearing -= 360.0;
         }
 
 #ifdef VERBOSE_OUTPUT_PROC
@@ -394,7 +385,7 @@ int main ()
     tattr_com.DEADLINE      = HARD;
     tattr_com.PERIOD        = GPS_PERIOD;
     tattr_com.STACK_SIZE    = 2000;
-    tattr_com.TIME_CAPACITY = 500000000;
+    tattr_com.TIME_CAPACITY = 5000000000;
     tattr_com.BASE_PRIORITY = 1;
 
     memcpy(&tattr_com.NAME, "PROC_COM_A653\0", 14 * sizeof(char));
@@ -404,7 +395,7 @@ int main ()
     tattr_pro_spdi.DEADLINE      = HARD;
     tattr_pro_spdi.PERIOD        = GPS_PERIOD;
     tattr_pro_spdi.STACK_SIZE    = 2000;
-    tattr_pro_spdi.TIME_CAPACITY = 375000000;
+    tattr_pro_spdi.TIME_CAPACITY = 3750000000;
     tattr_pro_spdi.BASE_PRIORITY = 1;
 
     memcpy(&tattr_pro_spdi.NAME, "PROC_SPDI_A653\0", 15 * sizeof(char));
@@ -414,7 +405,7 @@ int main ()
     tattr_pro_alpr.DEADLINE      = HARD;
     tattr_pro_alpr.PERIOD        = GPS_PERIOD;
     tattr_pro_alpr.STACK_SIZE    = 2000;
-    tattr_pro_alpr.TIME_CAPACITY = 375000000;
+    tattr_pro_alpr.TIME_CAPACITY = 3750000000;
     tattr_pro_alpr.BASE_PRIORITY = 5;
 
     memcpy(&tattr_pro_alpr.NAME, "PROC_ALPR_A653\0", 15 * sizeof(char));

@@ -39,8 +39,6 @@
  * TESTS SETTINGS
  ******************************************************************************/
 
-#define GENERATOR_LOAD 10  /* Processing simulation */
-
 #define PLANE_SPEED   210.0      /* Plane speed in Km/H */
 #define PLANE_BEARING 10         /* Plane bearing in deg
                                     (must be a divisor of 360)*/
@@ -168,38 +166,34 @@ void* gen_thread_func(void)
             {
                 GET_ET_STAT_2_3
             }
+            
+            /* Get new distance */
+            dist_since_last = ((GPS_PERIOD / 1000000000.0) * PLANE_SPEED) /
+                                3600.0;
 
-            /* Computation simulation */
-            for(volatile uint32_t j = 0; j < GENERATOR_LOAD; ++j)
-            {
-
-                /* Get new distance */
-                dist_since_last = ((GPS_PERIOD / 1000000000.0) * PLANE_SPEED) /
-                                  3600.0;
-
-                rad_lat = TO_RAD(current_position.lat);
-                rad_lon = TO_RAD(current_position.lon);
+            rad_lat = TO_RAD(current_position.lat);
+            rad_lon = TO_RAD(current_position.lon);
 
 
-                /* Generate new point */
-                lat_part1 = sin(rad_lat) *
-                            cos(dist_since_last / EARTH_RAD);
-                lat_part2 = rad_lat *
-                            sin(dist_since_last / EARTH_RAD) *
-                            cos(TO_RAD((double)init_brng));
+            /* Generate new point */
+            lat_part1 = sin(rad_lat) *
+                        cos(dist_since_last / EARTH_RAD);
+            lat_part2 = rad_lat *
+                        sin(dist_since_last / EARTH_RAD) *
+                        cos(TO_RAD((double)init_brng));
 
-                new_lat = asin(lat_part1 + lat_part2);
+            new_lat = asin(lat_part1 + lat_part2);
 
-                lon_part1 = sin(TO_RAD((double)init_brng)) *
-                            sin(dist_since_last / EARTH_RAD) *
-                            cos(rad_lat);
-                lon_part2 = cos(dist_since_last / EARTH_RAD) -
-                            sin(rad_lat) *
-                            sin(new_lat);
+            lon_part1 = sin(TO_RAD((double)init_brng)) *
+                        sin(dist_since_last / EARTH_RAD) *
+                        cos(rad_lat);
+            lon_part2 = cos(dist_since_last / EARTH_RAD) -
+                        sin(rad_lat) *
+                        sin(new_lat);
 
-                new_lon = rad_lon +
-                          atan2(lon_part1, lon_part2);
-            }
+            new_lon = rad_lon +
+                        atan2(lon_part1, lon_part2);
+            
 
             /* Set new point */
             current_position.lat = TO_DEG(new_lat);
@@ -259,7 +253,7 @@ int main()
     tattr_gen.DEADLINE      = HARD;
     tattr_gen.PERIOD        = GPS_PERIOD;
     tattr_gen.STACK_SIZE    = 2000;
-    tattr_gen.TIME_CAPACITY = 125000000;
+    tattr_gen.TIME_CAPACITY = 1500000000;
     tattr_gen.BASE_PRIORITY = 25;
     memcpy(tattr_gen.NAME, "GPS_GEN_A653\0", 13 * sizeof(char));
 
@@ -268,7 +262,7 @@ int main()
     tattr_com.DEADLINE      = HARD;
     tattr_com.PERIOD        = GPS_PERIOD;
     tattr_com.STACK_SIZE    = 2000;
-    tattr_com.TIME_CAPACITY = 125000000;
+    tattr_com.TIME_CAPACITY = 1000000000;
     tattr_com.BASE_PRIORITY = 50;
     memcpy(tattr_com.NAME, "GPS_COM_A653\0", 13 * sizeof(char));
 

@@ -27,52 +27,48 @@
 #include <arinc653/time.h>
 
 #define GET_STAT 1
-#include "../../../../BENCH_TOOLS/get_stat.h"
+#include "../../../../../BENCH_TOOLS/get_stat.h"
 
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
-#define PRIME_RANGE_BEGIN 1
-#define PRIME_RANGE_END   10000
+#define SQRT_ITER_COUNT   100
 
-/*******************************************************************************
- * TESTS FUNCTIONS
- ******************************************************************************/
-static uint8_t is_prime(uint32_t value)
+static double sqrt(double value)
 {
-    uint32_t i;
+    double prev_val = value + 1;
+    double next_val = value;
 
-    if(value == 0)
-        return 0;
+    while(prev_val != next_val)
+    {
+        prev_val = next_val;
+        next_val = (prev_val + value / prev_val) / 2.0;
+    }
 
-    for(i = 2; i < value; ++i)
-        if(value % i == 0)
-            return 0;
-
-    return 1;
+    return next_val;
 }
 
-static void* prime_thread_func(void)
+static void* sqrt_thread_func(void)
 {
     RETURN_CODE_TYPE      ret_type;
     PARTITION_STATUS_TYPE pr_stat;
 
-    uint32_t i;
-    uint32_t count;
+    float sum;
+    uint32_t i, j;
 
-    /* Probing point */
     GET_ET_STAT_1_3
 
     while(1)
     {
-        /* Probing point */
         GET_ET_STAT_2_3
 
-        /* PRIMES Iterations */
-        count = 0;
-        for(i = PRIME_RANGE_BEGIN; i < PRIME_RANGE_END; ++i)
+        /* SQRT Iterations */
+        sum = 0;
+        for(i = 1; i < SQRT_ITER_COUNT; ++i)
         {
-            count += is_prime(i);
+            for(j = 1; j < SQRT_ITER_COUNT; ++j)
+                sum += sqrt(i) * sqrt(j);
+
         }
 
         GET_PARTITION_STATUS(&pr_stat, &ret_type);
@@ -82,12 +78,9 @@ static void* prime_thread_func(void)
             return (void*)1;
         }
 
-        printf("\n[p%ld:%lld|%lld|%d] %u primes exist in [%u; %u]\n",
-               pr_stat.IDENTIFIER, pr_stat.PERIOD, pr_stat.DURATION,
-               pr_stat.OPERATING_MODE, count, PRIME_RANGE_BEGIN,
-               PRIME_RANGE_END);
+        printf("\n[p%ld:%lld|%lld|%d] SQRT Sum: %f\n", pr_stat.IDENTIFIER,
+               pr_stat.PERIOD, pr_stat.DURATION, pr_stat.OPERATING_MODE, sum);
 
-        /* Probing point */
         GET_ET_STAT_3_3
 
         PERIODIC_WAIT(&ret_type);
@@ -103,41 +96,41 @@ static void* prime_thread_func(void)
 
 /*******************************************************************************
  * TESTS MAIN
- *************************095*****************************************************/
+ ******************************************************************************/
 int main ()
 {
     PROCESS_ATTRIBUTE_TYPE tattr;
     PROCESS_ID_TYPE        thread;
     RETURN_CODE_TYPE       ret_type;
 
-    tattr.ENTRY_POINT   = prime_thread_func;
+    tattr.ENTRY_POINT   = sqrt_thread_func;
     tattr.DEADLINE      = HARD;
     tattr.PERIOD        = 400000000;
     tattr.STACK_SIZE    = 8096;
     tattr.TIME_CAPACITY = 200000000;
-    tattr.BASE_PRIORITY = 50;
-    memcpy(&tattr.NAME, "PRIME_A653\0", 11 * sizeof(char));
+    tattr.BASE_PRIORITY = MIN_PRIORITY_VALUE;
+    memcpy(&tattr.NAME, "SQRT_A653\0", 10 * sizeof(char));
 
-    printf("Init PRIME partition\n");
+    printf("Init SQRT partition\n");
 
     CREATE_PROCESS (&tattr, &thread, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot create PRIME process[%d]\n", ret_type);
+        printf("Cannot create SQRT process[%d]\n", ret_type);
     }
 
     START(thread, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot start PRIME process[%d]\n", ret_type);
+        printf("Cannot start SQRT process[%d]\n", ret_type);
     }
 
     /* Parition has been initialized, now switch to normal mode */
-    printf("PRIME partition switching to normal mode\n");
+    printf("SQRT partition switching to normal mode\n");
     SET_PARTITION_MODE (NORMAL, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot switch PRIME partition to NORMAL state[%d]\n", ret_type);
+        printf("Cannot switch SQRT partition to NORMAL state[%d]\n", ret_type);
         return -1;
     }
 

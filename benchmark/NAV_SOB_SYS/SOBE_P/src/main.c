@@ -39,8 +39,7 @@
  * TESTS SETTINGS
  ******************************************************************************/
 
-#define GENERATOR_LOAD 3000  /* Processing simulation */
-#define MAT_SIZE 20
+#define MAT_SIZE 200
 
 //#define VERBOSE_OUTPUT_PROC
 #define OUTPUT_PROC
@@ -178,7 +177,7 @@ int main ()
     tattr_sob.DEADLINE      = HARD;
     tattr_sob.PERIOD        = GPS_PERIOD;
     tattr_sob.STACK_SIZE    = 2000;
-    tattr_sob.TIME_CAPACITY = 500000000;
+    tattr_sob.TIME_CAPACITY = 5000000000;
     tattr_sob.BASE_PRIORITY = 1;
 
     memcpy(&tattr_sob.NAME, "SOBE_PRO_A653\0", 14 * sizeof(char));

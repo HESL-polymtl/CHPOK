@@ -48,11 +48,21 @@
  */
 #define CACHE_RDONLY 1
 
+/* When test is only supposed to stress L1 or L2, activating this will populate
+ * the desired cache level by loading the data. Then other data will be read to
+ * evict the preloaded data from the L1 or L2 (or both). But the preloaded data
+ * will stay in the L3 (or L2) cache.
+ * Please use these option exclusively toward each-others
+ */
+#define CACHE_PRELOAD_L2 0
+#define CACHE_PRELOAD_L3 0
+
 /*******************************************************************************
  * PARTITION SPECIFIC VARIABLES
  ******************************************************************************/
 
 static uint8_t data[DATA_SIZE];
+static uint8_t evict_data[CACHE_SIZE_L2];
 
 /*******************************************************************************
  * TESTS FUNCTIONS
@@ -128,7 +138,6 @@ int main()
 
     RETURN_CODE_TYPE       ret_type;
 
-
     /* Set CACHE manipulation process */
     tattr_cache_0.ENTRY_POINT   = cache_thread_func_0;
     tattr_cache_0.DEADLINE      = HARD;
@@ -148,6 +157,57 @@ int main()
         return -1;
     }
 
+#if CACHE_PRELOAD_L2
+    uint8_t* start_address;
+    uint8_t* end_address;
+    uint8_t tmp;
+
+    /* Preload the L2 caches */
+    end_address =  MIN((data + DATA_SIZE), (data + CACHE_SIZE_L2));
+    start_address = data;
+
+    while(start_address != end_address)
+    {
+        tmp = *start_address;
+        ++start_address;
+    }
+
+    /* Evict L1 caches */
+    end_address =  evict_data + CACHE_SIZE_L1;
+    start_address = evict_data;
+
+    while(start_address != end_address)
+    {
+        tmp = *start_address;
+        ++start_address;
+    }
+
+#elif CACHE_PRELOAD_L3
+    uint8_t* start_address;
+    uint8_t* end_address;
+    uint8_t tmp;
+
+    /* Preload the L3 caches */
+    end_address =  MIN((data + DATA_SIZE), (data + CACHE_SIZE_L3));
+    start_address = data;
+
+    while(start_address != end_address)
+    {
+        tmp = *start_address;
+        ++start_address;
+    }
+
+    /* Evict L1 and L2 caches */
+    end_address =  evict_data + CACHE_SIZE_L2;
+    start_address = evict_data;
+
+    while(start_address != end_address)
+    {
+        tmp = *start_address;
+        ++start_address;
+    }
+
+#endif
     /* Start all processes */
     START(thread_cache_0, &ret_type);
     if(ret_type != NO_ERROR)
