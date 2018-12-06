@@ -74,14 +74,16 @@
  * TOOLS
  ******************************************************************************/
 
+#define OUTPUT_ENABLED 1// Comment this if you don't want the programs to ouput
+
 #define MIN(v1, v2) (v1 < v2 ? v1 : v2)
 
+#if OUTPUT_ENABLED
 #if OPERATING_SYSTEM == VXWORK
 #define OUTPUT(FMT, ...) printf(FMT, ##__VA_ARGS__)
 #elif OPERATING_SYSTEM == CHPOK
 #define OUTPUT(FMT, ...) printf(FMT, ##__VA_ARGS__)
 #elif OPERATING_SYSTEM == CUSTOM
-
 /* This counts the number of args */
 #define NARGS_SEQ(_1,_2,_3,_4,_5,_6,_7,_8,N,...) N
 #define NARGS(...) NARGS_SEQ(##__VA_ARGS__, 8, 7, 6, 5, 4, 3, 2, 1)
@@ -114,7 +116,9 @@
 #else
 #define OUTPUT(FMT, ...) (void)
 #endif
-
+#else
+#define OUTPUT(FMT, ...)
+#endif
 /*******************************************************************************
  * INFORMATIONS
  ******************************************************************************/
