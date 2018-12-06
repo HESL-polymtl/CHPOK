@@ -56,6 +56,15 @@
 #define ARCH_PPC 1
 #define ARCH_ARM 0
 
+
+/*******************************************************************************
+ * TOOLS
+ ******************************************************************************/
+
+#define OUTPUT_ENABLED 1// Comment this if you don't want the programs to ouput
+
+#include "standalone_libs.h"
+
 /*******************************************************************************
  * OPERATING SYSTEM
  *
@@ -70,20 +79,32 @@
 #define OPERATING_SYSTEM CHPOK
 //#define OPERATING_SYSTEM CUSTOM
 
-/*******************************************************************************
- * TOOLS
- ******************************************************************************/
 
-#define OUTPUT_ENABLED 1// Comment this if you don't want the programs to ouput
-
-#define MIN(v1, v2) (v1 < v2 ? v1 : v2)
+#if OPERATING_SYSTEM == VXWORK
 
 #if OUTPUT_ENABLED
-#if OPERATING_SYSTEM == VXWORK
 #define OUTPUT(FMT, ...) printf(FMT, ##__VA_ARGS__)
+#else
+#define OUTPUT(FMT, ...)
+#endif
+
 #elif OPERATING_SYSTEM == CHPOK
+
+#if OUTPUT_ENABLED
 #define OUTPUT(FMT, ...) printf(FMT, ##__VA_ARGS__)
+#else
+#define OUTPUT(FMT, ...)
+#endif
+
+#include <stdio.h>
+
+#include <arinc653/partition.h>
+#include <arinc653/types.h>
+#include <arinc653/time.h>
+
 #elif OPERATING_SYSTEM == CUSTOM
+
+#if OUTPUT_ENABLED
 /* This counts the number of args */
 #define NARGS_SEQ(_1,_2,_3,_4,_5,_6,_7,_8,N,...) N
 #define NARGS(...) NARGS_SEQ(##__VA_ARGS__, 8, 7, 6, 5, 4, 3, 2, 1)
@@ -112,12 +133,10 @@
     Printf(FMT, (void*)x1, (void*)x2, (void*)x3, (void*)x4, (void*)x5, (void*)x6, (void*)x7, (void*)x8)
 
 #define OUTPUT(FMT, ...) CUST_PRINT(FMT, ##__VA_ARGS__)
-
-#else
-#define OUTPUT(FMT, ...) (void)
-#endif
 #else
 #define OUTPUT(FMT, ...)
+#endif
+
 #endif
 /*******************************************************************************
  * INFORMATIONS

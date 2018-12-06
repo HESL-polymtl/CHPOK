@@ -25,6 +25,7 @@ part_dir = Dir('.').abspath
 part_build_dir = os.path.join(part_dir, 'build', env['BSP'], '')
 
 src_dirs = [os.path.join(part_dir, 'src', '')]
+src_dirs += [os.path.join(part_dir, '../../BenchmarksTools', '')]
 src_script_dirs = []
 
 part_xml = os.path.join(part_dir, 'config.xml')

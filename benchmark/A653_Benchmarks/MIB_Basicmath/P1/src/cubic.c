@@ -23,8 +23,7 @@
 **  public domain by Ross Cottrell
 */
 
-#include <stdlib.h>
-#include "snipmath.h"
+#include "../../../BenchmarksTools/benc_config.h"
 
 void SolveCubic(double  a,
                 double  b,

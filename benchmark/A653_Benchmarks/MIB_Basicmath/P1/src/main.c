@@ -15,17 +15,6 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <types.h>
-#include <stdlib.h>
-
-#include <arinc653/partition.h>
-#include <arinc653/types.h>
-#include <arinc653/time.h>
-
-#include "snipmath.h"
-
 #include "../../../BenchmarksTools/benc_config.h"
 
 /*******************************************************************************
@@ -43,6 +32,10 @@
 /*******************************************************************************
  * TESTS FUNCTIONS
  ******************************************************************************/
+
+extern void SolveCubic(double  a, double  b, double  c, double  d,
+                       int  *solutions, double *x);
+
 void large_process(void)
 {
       double  a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;

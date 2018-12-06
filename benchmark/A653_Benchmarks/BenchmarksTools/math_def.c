@@ -7,18 +7,15 @@
  *    Alexy Torres Aurora Dugo
  *
  *
- * Test: Solve basic mathematical functions, the benchmark can be set to perform
- * large, small or both computation loads.
- *
- * Ported from:
- *     MiBench Version 1.0 (http://vhosts.eecs.umich.edu/mibench/)
+ *  Standalone functions to abstract library use.
  *
  ******************************************************************************/
 
-#include "pi.h"
-
+#include "standalone_libs.h"
 
 /* Basic math definition */
+
+#define abs(x) (x < 0 ? -x : x)
 
 double isnan(double val)
 {
@@ -68,6 +65,27 @@ double sqrt(double val)
   return (x);
 }
 
+void usqrt(unsigned long x, struct int_sqrt *q)
+{
+      unsigned long a = 0L;                   /* accumulator      */
+      unsigned long r = 0L;                   /* remainder        */
+      unsigned long e = 0L;                   /* trial product    */
+
+      int i;
+
+      for (i = 0; i < BITSPERLONG; i++)   /* NOTE 1 */
+      {
+            r = (r << 2) + TOP2BITS(x); x <<= 2; /* NOTE 2 */
+            a <<= 1;
+            e = (a << 1) + 1;
+            if (r >= e)
+            {
+                  r -= e;
+                  a++;
+            }
+      }
+      memcpy(q, &a, sizeof(long));
+}
 
 double sin(double rad)
 {
@@ -531,4 +549,25 @@ double atan(double x)
 					return +atani5(+x);
 				else
 					return +Tail(+x);
+}
+
+
+// Handbook of Mathematical Functions
+// M. Abramowitz and I.A. Stegun, Ed.
+
+// Absolute error <= 6.7e-5
+double acos(double x)
+{
+  double negate = (double)(x < 0);
+  x = abs(x);
+  double ret = -0.0187293;
+  ret = ret * x;
+  ret = ret + 0.0742610;
+  ret = ret * x;
+  ret = ret - 0.2121144;
+  ret = ret * x;
+  ret = ret + 1.5707288;
+  ret = ret * sqrt(1.0-x);
+  ret = ret - 2 * negate * ret;
+  return negate * 3.14159265358979 + ret;
 }
