@@ -14,15 +14,6 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <types.h>
-#include <stdlib.h>
-
-#include <arinc653/partition.h>
-#include <arinc653/types.h>
-#include <arinc653/time.h>
-
 #include "../../../BenchmarksTools/benc_config.h"
 
 /*******************************************************************************

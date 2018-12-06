@@ -17,14 +17,6 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <types.h>
-#include <stdlib.h>
-
-#include <arinc653/partition.h>
-#include <arinc653/types.h>
-#include <arinc653/time.h>
 
 #include "../../../BenchmarksTools/benc_config.h"
 
@@ -43,15 +35,6 @@
 
 
 double a[EQU_COUNT][EQU_COUNT], b[EQU_COUNT], x[EQU_COUNT];
-
-static double fabs(double n)
-{
-  double f;
-
-  if (n >= 0) f = n;
-  else f = -n;
-  return f;
-}
 
 int ludcmp(int n, double eps)
 {

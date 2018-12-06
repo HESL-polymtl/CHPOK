@@ -21,6 +21,10 @@
 #define INV_PHI  (1.0/PHI)                     /* the golden ratio     */
 #endif
 
+#ifndef RAND_MAX
+#define RAND_MAX  32767
+#endif
+
 #define BITSPERLONG 32
 
 #define TOP2BITS(x) ((x & (3L << (BITSPERLONG-2))) >> (BITSPERLONG-2))

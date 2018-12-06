@@ -16,15 +16,6 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <types.h>
-#include <stdlib.h>
-
-#include <arinc653/partition.h>
-#include <arinc653/types.h>
-#include <arinc653/time.h>
-
 #include "../../../BenchmarksTools/benc_config.h"
 
 /*******************************************************************************
@@ -40,11 +31,6 @@
 /*******************************************************************************
  * TESTS FUNCTIONS
  ******************************************************************************/
-#ifndef RAND_MAX
-#define RAND_MAX 32768
-#endif
-#define PI 3.14159265358979323846
-
 
 /* function prototypes for fft and filter functions */
 
@@ -56,86 +42,10 @@ static float gaussian(void);
 /* set convergence parameter */
 float mu = 0.01;
 
-
-int rand()
-{
-  static unsigned long next = 1;
-
-  next = next * 1103515245 + 12345;
-  return (unsigned int)(next/65536) % 32768;
-}
-
 static float log(r)
 float r;
 {
   return 4.5;
-}
-
-static float fabs(float n)
-{
-  float f;
-
-  if (n >= 0) f = n;
-  else f = -n;
-  return f;
-}
-
-static float sqrt(val)
-float val;
-{
-  float x = val/10;
-
-  float dx;
-
-  double diff;
-  double min_tol = 0.00001;
-
-  int i, flag;
-
-  flag = 0;
-  if (val == 0 ) x = 0;
-  else {
-    for (i=1;i<20;i++)
-      {
-	if (!flag) {
-	  dx = (val - (x*x)) / (2.0 * x);
-	  x = x + dx;
-	  diff = val - (x*x);
-	  if (fabs(diff) <= min_tol) flag = 1;
-	}
-	else
-	  x =x;
-      }
-  }
-  return (x);
-}
-
-
-static float sin(rad)
-float rad;
-{
-  float app;
-
-  float diff;
-  int inc = 1;
-
-  while (rad > 2*PI)
-	rad -= 2*PI;
-  while (rad < -2*PI)
-    rad += 2*PI;
-  app = diff = rad;
-   diff = (diff * (-(rad*rad))) /
-      ((2.0 * inc) * (2.0 * inc + 1.0));
-    app = app + diff;
-    inc++;
-  while(fabs(diff) >= 0.00001) {
-    diff = (diff * (-(rad*rad))) /
-      ((2.0 * inc) * (2.0 * inc + 1.0));
-    app = app + diff;
-    inc++;
-  }
-
-  return(app);
 }
 
 static float gaussian()

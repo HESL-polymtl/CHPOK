@@ -16,15 +16,6 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <types.h>
-#include <stdlib.h>
-
-#include <arinc653/partition.h>
-#include <arinc653/types.h>
-#include <arinc653/time.h>
-
 #include "../../../BenchmarksTools/benc_config.h"
 
 /*******************************************************************************
@@ -49,48 +40,6 @@ double x1[2];
 double x2[2];
 
 int flag;
-
-int  qurt();
-
-
-double fabs(double n)
-{
-  double f;
-
-  if (n >= 0) f = n;
-  else f = -n;
-  return f;
-}
-
-double sqrt(val)
-double val;
-{
-  double x = val/10;
-
-  double dx;
-
-  double diff;
-  double min_tol = 0.00001;
-
-  int i, flag;
-
-  flag = 0;
-  if (val == 0 ) x = 0;
-  else {
-    for (i=1;i<20;i++)
-      {
-	if (!flag) {
-	  dx = (val - (x*x)) / (2.0 * x);
-	  x = x + dx;
-	  diff = val - (x*x);
-	  if (fabs(diff) <= min_tol) flag = 1;
-	}
-	else
-	  x =x;
-      }
-  }
-  return (x);
-}
 
 int  qurt()
 {
