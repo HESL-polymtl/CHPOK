@@ -25,6 +25,8 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../BenchmarksTools/benc_config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
@@ -204,7 +206,7 @@ float lms(float x,float d,float *b,int l,
 /* calculate filter output */
     y=b[0]*px[0];
 #ifdef DEBUG
-    printf("l=%d\n",l);
+    OUTPUT("l=%d\n",l);
 #endif
     for(ll = 1 ; ll <= l ; ll++)
         y=y+b[ll]*px[ll];
@@ -234,13 +236,13 @@ void* lms_thread(void)
     GET_PARTITION_STATUS(&pr_stat, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("[LMS] Cannot get partition status [%d]\n", ret_type);
+        OUTPUT("[LMS] Cannot get partition status [%d]\n", ret_type);
         return (void*)1;
     }
 
     while(1)
     {
-        printf("Applying LMS\n");
+        OUTPUT("Applying LMS\n");
 
         float d[N],b[21];
         float signal_amp,noise_amp,arg,x;
@@ -271,7 +273,7 @@ void* lms_thread(void)
         PERIODIC_WAIT(&ret_type);
         if(ret_type != NO_ERROR)
         {
-            printf("[LMS] Cannot achieve periodic wait [%d]\n", ret_type);
+            OUTPUT("[LMS] Cannot achieve periodic wait [%d]\n", ret_type);
             return (void*)1;
         }
     }
@@ -300,13 +302,13 @@ int main()
     th_attr_lms.BASE_PRIORITY = 1;
     memcpy(th_attr_lms.NAME, "LMS_A653\0", 9 * sizeof(char));
 
-    printf("Init P0 partition\n");
+    OUTPUT("Init P0 partition\n");
 
     /* Create processes */
     CREATE_PROCESS(&th_attr_lms, &thread_lms, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot create LMS process [%d]\n", ret_type);
+        OUTPUT("Cannot create LMS process [%d]\n", ret_type);
         return -1;
     }
 
@@ -314,16 +316,16 @@ int main()
     START(thread_lms, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot start LMS process[%d]\n", ret_type);
+        OUTPUT("Cannot start LMS process[%d]\n", ret_type);
         return -1;
     }
 
     /* Parition has been initialized, now switch to normal mode */
-    printf("P0 partition switching to normal mode\n");
+    OUTPUT("P0 partition switching to normal mode\n");
     SET_PARTITION_MODE(NORMAL, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
+        OUTPUT("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
         return -1;
     }
 

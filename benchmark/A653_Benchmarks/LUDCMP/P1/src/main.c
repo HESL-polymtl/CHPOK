@@ -26,6 +26,8 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../BenchmarksTools/benc_config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
@@ -105,13 +107,13 @@ void* ludcmp_thread(void)
     GET_PARTITION_STATUS(&pr_stat, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("[LUDCMP] Cannot get partition status [%d]\n", ret_type);
+        OUTPUT("[LUDCMP] Cannot get partition status [%d]\n", ret_type);
         return (void*)1;
     }
 
     while(1)
     {
-        printf("Solving %u equations\n", EQU_COUNT);
+        OUTPUT("Solving %u equations\n", EQU_COUNT);
 
         int i, j, n = EQU_COUNT, chkerr;
         double eps, w;
@@ -131,13 +133,13 @@ void* ludcmp_thread(void)
         }
 
         chkerr = ludcmp(n, eps);
-        printf("Result: %d\n", chkerr);
+        OUTPUT("Result: %d\n", chkerr);
 
 
         PERIODIC_WAIT(&ret_type);
         if(ret_type != NO_ERROR)
         {
-            printf("[LUDCMP] Cannot achieve periodic wait [%d]\n", ret_type);
+            OUTPUT("[LUDCMP] Cannot achieve periodic wait [%d]\n", ret_type);
             return (void*)1;
         }
     }
@@ -166,13 +168,13 @@ int main()
     th_attr_ludcmp.BASE_PRIORITY = 1;
     memcpy(th_attr_ludcmp.NAME, "LUDCMP_A653\0", 9 * sizeof(char));
 
-    printf("Init P0 partition\n");
+    OUTPUT("Init P0 partition\n");
 
     /* Create processes */
     CREATE_PROCESS(&th_attr_ludcmp, &thread_ludcmp, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot create LUDCMP process [%d]\n", ret_type);
+        OUTPUT("Cannot create LUDCMP process [%d]\n", ret_type);
         return -1;
     }
 
@@ -180,16 +182,16 @@ int main()
     START(thread_ludcmp, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot start LUDCMP process[%d]\n", ret_type);
+        OUTPUT("Cannot start LUDCMP process[%d]\n", ret_type);
         return -1;
     }
 
     /* Parition has been initialized, now switch to normal mode */
-    printf("P0 partition switching to normal mode\n");
+    OUTPUT("P0 partition switching to normal mode\n");
     SET_PARTITION_MODE(NORMAL, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
+        OUTPUT("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
         return -1;
     }
 

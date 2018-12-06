@@ -23,6 +23,8 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../BenchmarksTools/benc_config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
@@ -270,7 +272,7 @@ static float gaussian()
 	v2 *= rconst1;
 	r = v1*v1 + v2*v2;
 #ifdef DEBUG
-	printf("*");
+	OUTPUT("*");
 #endif
       }        /* make radius less than 1 */
 
@@ -313,13 +315,13 @@ void* fir_thread(void)
     GET_PARTITION_STATUS(&pr_stat, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("[FIR] Cannot get partition status [%d]\n", ret_type);
+        OUTPUT("[FIR] Cannot get partition status [%d]\n", ret_type);
         return (void*)1;
     }
 
     while(1)
     {
-        printf("Computing FIR values\n");
+        OUTPUT("Computing FIR values\n");
         int          i;
         float x;
         float sigma = 0.2;
@@ -337,13 +339,13 @@ void* fir_thread(void)
         }
 
         #ifdef DEBUG
-            printf("n=%d\n",Cnt2);
+            OUTPUT("n=%d\n",Cnt2);
         #endif
 
         PERIODIC_WAIT(&ret_type);
         if(ret_type != NO_ERROR)
         {
-            printf("[FIR] Cannot achieve periodic wait [%d]\n", ret_type);
+            OUTPUT("[FIR] Cannot achieve periodic wait [%d]\n", ret_type);
             return (void*)1;
         }
     }
@@ -372,13 +374,13 @@ int main()
     th_attr_fir.BASE_PRIORITY = 1;
     memcpy(th_attr_fir.NAME, "FIR_A653\0", 9 * sizeof(char));
 
-    printf("Init P0 partition\n");
+    OUTPUT("Init P0 partition\n");
 
     /* Create processes */
     CREATE_PROCESS(&th_attr_fir, &thread_fir, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot create FIR process [%d]\n", ret_type);
+        OUTPUT("Cannot create FIR process [%d]\n", ret_type);
         return -1;
     }
 
@@ -386,16 +388,16 @@ int main()
     START(thread_fir, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot start FIR process[%d]\n", ret_type);
+        OUTPUT("Cannot start FIR process[%d]\n", ret_type);
         return -1;
     }
 
     /* Parition has been initialized, now switch to normal mode */
-    printf("P0 partition switching to normal mode\n");
+    OUTPUT("P0 partition switching to normal mode\n");
     SET_PARTITION_MODE(NORMAL, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
+        OUTPUT("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
         return -1;
     }
 

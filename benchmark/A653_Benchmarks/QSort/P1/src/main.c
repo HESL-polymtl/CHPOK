@@ -25,6 +25,8 @@
 #include <arinc653/types.h>
 #include <arinc653/time.h>
 
+#include "../../../BenchmarksTools/benc_config.h"
+
 /*******************************************************************************
  * TESTS SETTINGS
  ******************************************************************************/
@@ -110,13 +112,13 @@ void* qsort_thread(void)
     GET_PARTITION_STATUS(&pr_stat, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("[QSORT] Cannot get partition status [%d]\n", ret_type);
+        OUTPUT("[QSORT] Cannot get partition status [%d]\n", ret_type);
         return (void*)1;
     }
 
     while(1)
     {
-        printf("Sorting %u floating points.\n", ARRAY_SIZE);
+        OUTPUT("Sorting %u floating points.\n", ARRAY_SIZE);
         for(i = 0; i < ARRAY_SIZE; ++i)
         {
             arr[i] = (float)rand() / (float)(rand() + 1.0);
@@ -126,13 +128,13 @@ void* qsort_thread(void)
         {
             if(arr[i] < arr[i - 1])
             {
-                printf("Error, sorting did not go well\n");
+                OUTPUT("Error, sorting did not go well\n");
             }
         }
         PERIODIC_WAIT(&ret_type);
         if(ret_type != NO_ERROR)
         {
-            printf("[QSORT] Cannot achieve periodic wait [%d]\n", ret_type);
+            OUTPUT("[QSORT] Cannot achieve periodic wait [%d]\n", ret_type);
             return (void*)1;
         }
     }
@@ -161,13 +163,13 @@ int main()
     th_attr_qsort.BASE_PRIORITY = 1;
     memcpy(th_attr_qsort.NAME, "QSORT_A653\0", 9 * sizeof(char));
 
-    printf("Init P0 partition\n");
+    OUTPUT("Init P0 partition\n");
 
     /* Create processes */
     CREATE_PROCESS(&th_attr_qsort, &thread_qsort, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot create QSORT process [%d]\n", ret_type);
+        OUTPUT("Cannot create QSORT process [%d]\n", ret_type);
         return -1;
     }
 
@@ -175,16 +177,16 @@ int main()
     START(thread_qsort, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot start QSORT process[%d]\n", ret_type);
+        OUTPUT("Cannot start QSORT process[%d]\n", ret_type);
         return -1;
     }
 
     /* Parition has been initialized, now switch to normal mode */
-    printf("P0 partition switching to normal mode\n");
+    OUTPUT("P0 partition switching to normal mode\n");
     SET_PARTITION_MODE(NORMAL, &ret_type);
     if(ret_type != NO_ERROR)
     {
-        printf("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
+        OUTPUT("Cannot switch P0 partition to NORMAL state[%d]\n", ret_type);
         return -1;
     }
 
