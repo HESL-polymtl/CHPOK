@@ -13,8 +13,6 @@
 #define __STANDALONE_LIBS_H_
 
 
-
-
 #ifndef PI
 #define PI 3.14159265359f
 #endif
@@ -49,5 +47,8 @@ extern double cos(double x);
 extern double pow(double n, double powval);
 extern double atan(double x);
 extern double acos(double x);
+
+extern void srand(unsigned int seed);
+extern unsigned int rand(void);
 
 #endif /* __STANDALONE_LIBS_H_ */
